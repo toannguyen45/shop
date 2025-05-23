@@ -1,14 +1,21 @@
-'use client'
-import React, { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { HeartIcon, SearchIcon, ShoppingBagIcon, UserIcon, MenuIcon, XIcon } from 'lucide-react'
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  HeartIcon,
+  SearchIcon,
+  ShoppingBagIcon,
+  UserIcon,
+  MenuIcon,
+  XIcon,
+} from "lucide-react";
 
 const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="w-full">
+    <header className="w-full border-b border-gray-200">
       {/* Top Header */}
       <div className="bg-black text-white">
         <div className="container mx-auto px-6 py-2">
@@ -24,7 +31,7 @@ const Header = () => {
             <div className="hidden md:block text-center flex-1">
               <p className="text-sm font-medium">Welcome to the Shop</p>
             </div>
-            
+
             {/* Right Links */}
             <div className="flex space-x-4 flex-1 justify-end">
               <Link href="/contact" className="hover:text-gray-300 text-sm">
@@ -40,21 +47,9 @@ const Header = () => {
 
       {/* Main Navbar */}
       <div className="container mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
-          {/* Mobile Menu Button */}
-          <button 
-            className="lg:hidden hover:text-gray-600"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? (
-              <XIcon className="w-6 h-6" />
-            ) : (
-              <MenuIcon className="w-6 h-6" />
-            )}
-          </button>
-
-          {/* Navigation Links - Hidden on Mobile */}
-          <nav className="hidden lg:flex space-x-6 uppercase">
+        <div className="grid grid-cols-3 items-center">
+          {/* Left Side - Navigation Links */}
+          <div className="hidden lg:flex items-center justify-start space-x-6 uppercase">
             <Link href="/products" className="hover:text-gray-600">
               Products
             </Link>
@@ -64,14 +59,28 @@ const Header = () => {
             <Link href="/new-arrivals" className="hover:text-gray-600">
               New Arrivals
             </Link>
-          </nav>
+          </div>
 
-          {/* Logo */}
-          <div className="flex-shrink-0">
+          {/* Mobile Menu Button - Only show on mobile */}
+          <div className="lg:hidden">
+            <button
+              className="hover:text-gray-600"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? (
+                <XIcon className="w-6 h-6" />
+              ) : (
+                <MenuIcon className="w-6 h-6" />
+              )}
+            </button>
+          </div>
+
+          {/* Center - Logo */}
+          <div className="flex justify-center">
             <Link href="/">
               <div className="relative w-28 h-10 lg:w-32 lg:h-12">
                 <Image
-                  src="/logo.png"
+                  src="/imgs/logo.png"
                   alt="Logo"
                   fill
                   className="object-contain"
@@ -81,14 +90,16 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Icons */}
-          <div className="flex items-center">
+          {/* Right Side - Icons */}
+          <div className="flex items-center justify-end space-x-2">
             <button className="hover:text-gray-600 p-2">
               <SearchIcon className="w-5 h-5" />
             </button>
-            <button className="hover:text-gray-600 p-2 hidden lg:block">
-              <UserIcon className="w-5 h-5" />
-            </button>
+            <Link href="/login">
+              <button className="cursor-pointer hover:text-gray-600 p-2 hidden lg:block">
+                <UserIcon className="w-5 h-5" />
+              </button>
+            </Link>
             <button className="hover:text-gray-600 p-2 hidden lg:block">
               <HeartIcon className="w-5 h-5" />
             </button>
@@ -103,31 +114,31 @@ const Header = () => {
           <div className="lg:hidden fixed inset-0 z-50 bg-white">
             <div className="container mx-auto px-6 py-8">
               <div className="flex justify-end">
-                <button 
+                <button
                   className="hover:text-gray-600"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <XIcon className="w-6 h-6" />
                 </button>
               </div>
-              
+
               <nav className="mt-8 space-y-6 flex flex-col items-center">
-                <Link 
-                  href="/products" 
+                <Link
+                  href="/products"
                   className="text-xl hover:text-gray-600"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Products
                 </Link>
-                <Link 
-                  href="/collections" 
+                <Link
+                  href="/collections"
                   className="text-xl hover:text-gray-600"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Collections
                 </Link>
-                <Link 
-                  href="/new-arrivals" 
+                <Link
+                  href="/new-arrivals"
                   className="text-xl hover:text-gray-600"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -147,7 +158,7 @@ const Header = () => {
         )}
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
