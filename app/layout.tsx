@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/custom/theme-provider";
-import Header from "@/components/custom/header";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "@/components/ui/sonner";
+import NextTopLoader from "nextjs-toploader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,22 +29,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+          <NextTopLoader  showSpinner={false}/>
           {children}
+          <Toaster />
         </ThemeProvider>
-        <ToastContainer
-          autoClose={2000}
-          className="text-sm font-medium"
-          position="top-right"
-        />
       </body>
     </html>
   );
