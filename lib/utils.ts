@@ -67,46 +67,18 @@ export function formatId(id: string) {
   return `..${id.substring(id.length - 6)}`;
 }
 
-const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
-  currency: "USD",
-  style: "currency",
-  minimumFractionDigits: 2,
-});
+export const formatCurrency = (number: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(number);
+};
 
-// Format currency using the formatter above
-export function formatCurrency(amount: number | string | null) {
-  console.log(typeof amount ,'asdasd')
-  if (typeof amount === "number") {
-    return CURRENCY_FORMATTER.format(amount);
-  } else if (typeof amount === "string") {
-    return CURRENCY_FORMATTER.format(Number(amount));
-  } else {
-    return "NaN";
-  }
+// Convert prisma object into a regular JS object
+export function convertToPlainObject<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value));
 }
 
-export function formatVNCurrency(price: number | string | null) {
-  console.log("Price:", price, "Type:", typeof price);
-  // if (price == null) {
-  //   console.log("Returning 0 ₫ due to null/undefined");
-  //   return "0 ₫";
-  // }
-
-  // let number: number;
-  // if (typeof price === "string") {
-  //   number = parseInt(price.replace(/\D/g, "")) || 0;
-  //   console.log("Parsed string to number:", number);
-  // } else if (typeof price === "number") {
-  //   number = Math.floor(price);
-  //   console.log("Number after floor:", number);
-  // } else {
-  //   console.log("Unexpected type, returning 0 ₫");
-  //   return "0 ₫";
-  // }
-
-  // const formatted = number
-  //   .toString()
-  //   .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  // console.log("Formatted output:", `${formatted} ₫`);
-  // return `${formatted} ₫`;
-}
+export const formatPrice = (price: number) => {
+  return `${price.toLocaleString("vi-VN")} ₫`;
+};

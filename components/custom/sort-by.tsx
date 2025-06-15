@@ -8,8 +8,8 @@ const SortBy = () => {
   
   const sortOptions = [
     { label: "Featured", value: "featured" },
-    { label: "Price: Low to High", value: "price-asc" },
-    { label: "Price: High to Low", value: "price-desc" },
+    { label: "Giá: Thấp tới Cao", value: "lowest" },
+    { label: "Giá: Cao tới Thấp", value: "highest" },
     { label: "Newest", value: "newest" },
     { label: "Best Selling", value: "best-selling" },
   ];

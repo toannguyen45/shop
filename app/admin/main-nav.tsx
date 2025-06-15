@@ -11,15 +11,15 @@ const links = [
     href: '/admin/dashboard',
   },
   {
-    title: "Products",
+    title: "Sản Phẩm",
     href: "/admin/products",
   },
   {
-    title: "Orders",
+    title: "Đơn Hàng",
     href: "/admin/orders",
   },
   {
-    title: "Users",
+    title: "Khách Hàng",
     href: "/admin/users",
   },
 ];

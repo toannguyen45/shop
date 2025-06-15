@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatCurrency, formatId, formatVNCurrency } from "@/lib/utils";
+import { formatId, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -39,36 +39,35 @@ const AdminProductsPage = async (props: {
   console.log(products);
 
   return (
-    // <p>asdasd</p>
-    <div className="space-y-2">
-      <div className="flex-between">
+    <>
+      <div className="flex justify-between my-10">
         <div className="flex items-center gap-3">
-          <h1 className="h2-bold">Products</h1>
+          <h1 className="font-bold text-2xl">Sản Phẩm</h1>
           {searchText && (
             <div>
               Filtered by <i>&quot;{searchText}&quot;</i>{" "}
               <Link href="/admin/products">
                 <Button variant="outline" size="sm">
-                  Remove Filter
+                  Xoá tìm kiếm
                 </Button>
               </Link>
             </div>
           )}
         </div>
         <Button asChild variant="default">
-          <Link href="/admin/products/create">Create Product</Link>
+          <Link href="/admin/products/create">Thêm Sản Phẩm +</Link>
         </Button>
       </div>
 
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>NAME</TableHead>
-            <TableHead className="text-right">PRICE</TableHead>
-            <TableHead>CATEGORY</TableHead>
-            <TableHead>STOCK</TableHead>
-            <TableHead className="w-[100px]">ACTIONS</TableHead>
+            <TableHead>Ảnh</TableHead>
+            <TableHead>Tiêu Đề</TableHead>
+            <TableHead className="text-right">Giá</TableHead>
+            <TableHead>Danh Mục</TableHead>
+            <TableHead>Tồn Kho</TableHead>
+            <TableHead className="w-[100px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -77,7 +76,7 @@ const AdminProductsPage = async (props: {
               <TableCell>{formatId(product.id)}</TableCell>
               <TableCell>{product.name}</TableCell>
               <TableCell className="text-right">
-                {formatCurrency(product.price)}
+                {formatPrice(product.price)}
               </TableCell>
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.stock}</TableCell>
@@ -91,10 +90,19 @@ const AdminProductsPage = async (props: {
           ))}
         </TableBody>
       </Table>
-      {products.totalPages > 1 && (
-        <Pagination page={page} totalPages={products.totalPages} />
-      )}
-    </div>
+
+      <Pagination
+        currentPage={page}
+        totalPages={products.pagination.totalPages}
+        hasNextPage={products.pagination.hasNextPage}
+        hasPrevPage={products.pagination.hasPrevPage}
+        baseUrl="/admin/products"
+        searchParams={{
+          ...(searchText && { query: searchText }),
+          ...(category && { category }),
+        }}
+      />
+    </>
   );
 };
 

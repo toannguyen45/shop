@@ -44,10 +44,17 @@ export const productDefaultValues = {
   images: [],
   brand: "",
   description: "",
-  price: "0",
+  price: 0,
   stock: 0,
   isFeatured: false,
   banner: null,
 };
 
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 12;
+
+export const PRICE_RANGES = {
+  "under-500k": { min: 0, max: 500000 },
+  "500k-1m": { min: 500000, max: 1000000 },
+  "1m-2m": { min: 1000000, max: 2000000 },
+  "over-2m": { min: 2000000, max: Infinity },
+} as const;

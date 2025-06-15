@@ -1,51 +1,67 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '../ui/button';
-import { formUrlQuery } from '@/lib/utils';
 
-type PaginationProps = {
-  page: number | string;
+import {
+  Pagination as UIPagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+interface PaginationProps {
+  currentPage: number;
   totalPages: number;
-  urlParamName?: string;
-};
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  baseUrl: string;
+  searchParams?: Record<string, string>;
+}
 
-const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const handleClick = (btnType: string) => {
-    const pageValue = btnType === 'next' ? Number(page) + 1 : Number(page) - 1;
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: urlParamName || 'page',
-      value: pageValue.toString(),
+export default function Pagination({
+  currentPage,
+  totalPages,
+  hasNextPage,
+  hasPrevPage,
+  baseUrl,
+  searchParams = {},
+}: PaginationProps) {
+  const createPageUrl = (page: number) => {
+    const params = new URLSearchParams({
+      ...searchParams,
+      page: page.toString(),
     });
-
-    router.push(newUrl);
+    return `${baseUrl}?${params.toString()}`;
   };
 
   return (
-    <div className='flex gap-2'>
-      <Button
-        size='lg'
-        variant='outline'
-        className='w-28'
-        disabled={Number(page) <= 1}
-        onClick={() => handleClick('prev')}
-      >
-        Previous
-      </Button>
-      <Button
-        size='lg'
-        variant='outline'
-        className='w-28'
-        disabled={Number(page) >= totalPages}
-        onClick={() => handleClick('next')}
-      >
-        Next
-      </Button>
-    </div>
-  );
-};
+    <UIPagination className="mt-4">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious 
+            href={createPageUrl(currentPage - 1)}
+            className={!hasPrevPage ? "pointer-events-none opacity-50" : ""}
+          />
+        </PaginationItem>
+        
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+          <PaginationItem key={pageNum}>
+            <PaginationLink
+              href={createPageUrl(pageNum)}
+              isActive={pageNum === currentPage}
+            >
+              {pageNum}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
 
-export default Pagination;
+        <PaginationItem>
+          <PaginationNext 
+            href={createPageUrl(currentPage + 1)}
+            className={!hasNextPage ? "pointer-events-none opacity-50" : ""}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </UIPagination>
+  );
+}

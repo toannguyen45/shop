@@ -70,7 +70,7 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         // Update URL without full page reload
-        router.push(`${pathname}?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`, { scroll: false });
       });
     },
     [pathname, router, searchParams, addOptimisticFilter]
