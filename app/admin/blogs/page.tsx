@@ -14,6 +14,7 @@ import { formatId } from "@/lib/utils";
 import Pagination from "@/components/admin/pagination";
 import { deleteBlog, getAllBlogs } from "@/actions/blog.action";
 import DeleteDialog from "@/components/admin/delete-dialog";
+import { Blog } from "@/types/blog";
 
 const BlogList = async (props: {
   searchParams: Promise<{
@@ -55,7 +56,7 @@ const BlogList = async (props: {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {blogs.data.map((blog) => (
+          {blogs.data.map((blog: Blog) => (
             <TableRow key={blog.id}>
               <TableCell>{formatId(blog.id)}</TableCell>
               <TableCell>{blog.title}</TableCell>

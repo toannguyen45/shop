@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -26,9 +27,9 @@ export default function LoginForm() {
     }
   })
   async function onSubmit(values: LoginBodyType) {
-    if (loginMutation.isPending) return
+    // if (loginMutation.isPending) return
     try {
-      const result = await loginMutation.mutateAsync(values)
+      // const result = await loginMutation.mutateAsync(values)
     //   toast({
     //     description: result.payload.message
     //   })

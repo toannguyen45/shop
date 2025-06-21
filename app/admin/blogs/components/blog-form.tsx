@@ -29,6 +29,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { createBlog, updateBlog } from "@/actions/blog.action";
 import RichTextEditor from "@/components/TipTapEditor";
+import RichTextEditorVer2 from "@/components/TipTapEditorVerTwo/rich-text-editor";
 
 export default function BlogForm({
   type,
@@ -123,15 +124,6 @@ export default function BlogForm({
       toast.error("Failed to submit the form. Please try again.");
     }
   };
-  const [editorData, setEditorData] = useState<string>("");
-  const [data, setData] = useState<string>("");
-
-  const handleOnUpdate = (editor: string, field: string): void => {
-    if (field === "description") {
-      console.log("Editor data field:", editor);
-      setData(editor);
-    }
-  };
 
   return (
     <Form {...form}>
@@ -188,6 +180,7 @@ export default function BlogForm({
                   className="resize-none"
                   rows={3}
                   {...field}
+                  value={field.value ?? ""}
                 />
               </FormControl>
 
@@ -203,13 +196,7 @@ export default function BlogForm({
             <FormItem>
               <FormLabel>Nội Dung</FormLabel>
               <FormControl>
-                {/* <TiptapEditor/> */}
-                {/* <Editor/> */}
-                {/* <RichTextEditor
-                  content={field.value}
-                  onChange={field.onChange}
-                /> */}
-                {/* <TailwindEditor
+                {/* <RichTextEditorVer2
                   content={field.value}
                   onChange={field.onChange}
                 /> */}

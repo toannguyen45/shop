@@ -14,6 +14,7 @@ import Pagination from "@/components/admin/pagination";
 import { deleteProduct, getAllProducts } from "@/actions/product.action";
 import PageHeader from "@/components/admin/page-header";
 import Image from "next/image";
+import { Product } from "@/types/product";
 
 // import { requireAdmin } from '@/lib/auth-guard';
 
@@ -61,7 +62,7 @@ const AdminProductsPage = async (props: {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.data.map((product) => (
+          {products.data.map((product: Product) => (
             <TableRow key={product.id}>
               <TableCell>
                 <Image
