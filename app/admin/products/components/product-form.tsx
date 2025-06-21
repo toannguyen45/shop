@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import slugify from "slugify";
-import { insertProductSchema } from "@/schemaValidations/product.schema";
+import { insertProductSchema, updateProductSchema } from "@/schemaValidations/product.schema";
 import { productDefaultValues } from "@/constants";
 import {
   Form,
@@ -22,30 +22,57 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { createProduct } from "@/actions/product.action";
+import { createProduct, updateProduct } from "@/actions/product.action";
 import { UploadButton } from "@/lib/uploadthing";
+import { Product } from "@/types/product";
 
-const ProductForm = () => {
+const ProductForm = ({
+  type,
+  product,
+  productId,
+}: {
+  type: 'Create' | 'Update';
+  product?: Product;
+  productId?: string;
+}) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver: zodResolver(insertProductSchema),
-    defaultValues: productDefaultValues,
+    defaultValues:
+      product && type === 'Update' ? product : productDefaultValues,
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
     values
   ) => {
-    console.log(values, "asdasd");
     // On Create
+    if (type === 'Create') {
+      const res = await createProduct(values);
 
-    const res = await createProduct(values);
+      if (!res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+        router.push('/admin/products');
+      }
+    }
 
-    if (!res.success) {
-      toast.success(res.message);
-    } else {
-      toast.error(res.message);
-      router.push("/admin/products");
+    // On Update
+    if (type === 'Update') {
+      if (!productId) {
+        router.push('/admin/products');
+        return;
+      }
+
+      const res = await updateProduct({ ...values, id: productId });
+
+      if (!res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+        router.push('/admin/products');
+      }
     }
   };
 
@@ -330,9 +357,8 @@ const ProductForm = () => {
             type="submit"
             size="lg"
             disabled={form.formState.isSubmitting}
-            className="button col-span-2 w-full"
           >
-            {form.formState.isSubmitting ? "Submitting" : `Create`}
+            {form.formState.isSubmitting ? 'Đang chạy' : `${type} Product`}
           </Button>
         </div>
       </form>

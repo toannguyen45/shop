@@ -47,6 +47,7 @@ model User {
   session       Session[]
   Cart          Cart[]
   Order         Order[]
+  blogs         Blog[]
 }
 
 model Account {
@@ -133,3 +134,26 @@ model OrderItem {
 
   @@id([orderId, productId], map: "orderitems_orderId_productId_pk")
 }
+
+model Blog {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  slug        String   @unique
+  content     String
+  summary     String?
+  image       String?
+  isFeatured  Boolean  @default(false)
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @updatedAt
+  authorId    String   @db.Uuid
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags        String[]
+  // tags        Tag[]    @relation("PostTags")
+}
+
+// model Tag {
+//   id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   name  String  @unique
+//   blogs Blog[]  @relation("PostTags")
+// }

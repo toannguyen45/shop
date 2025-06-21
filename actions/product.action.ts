@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { insertProductSchema } from "@/schemaValidations/product.schema";
+import { insertProductSchema, updateProductSchema } from "@/schemaValidations/product.schema";
 import prisma from "@/db/prisma";
 import { revalidatePath } from "next/cache";
 import { convertToPlainObject, formatError } from "@/lib/utils";
@@ -25,6 +25,39 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
   }
 }
 
+// Update a product
+export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
+  try {
+    const product = updateProductSchema.parse(data);
+    const productExists = await prisma.product.findFirst({
+      where: { id: product.id },
+    });
+
+    if (!productExists) throw new Error('Product not found');
+
+    await prisma.product.update({
+      where: { id: product.id },
+      data: product,
+    });
+
+    revalidatePath('/admin/products');
+
+    return {
+      success: true,
+      message: 'Product updated successfully',
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// Get single product by it's slug
+export async function getProductBySlug(slug: string) {
+  return await prisma.product.findFirst({
+    where: { slug: slug },
+  });
+}
+
 // Get all products
 export async function getAllProducts({
   query,
@@ -45,31 +78,31 @@ export async function getAllProducts({
   const queryFilter: Prisma.ProductWhereInput =
     query && query !== "all"
       ? {
-          name: {
-            contains: query,
-            mode: "insensitive",
-          } as Prisma.StringFilter,
-        }
+        name: {
+          contains: query,
+          mode: "insensitive",
+        } as Prisma.StringFilter,
+      }
       : {};
 
   // Category filter
-  const categoryFilter: Prisma.ProductWhereInput = category && category !== "all" 
+  const categoryFilter: Prisma.ProductWhereInput = category && category !== "all"
     ? {
-        category: {
-          in: category.split(","),
-        },
-      }
+      category: {
+        in: category.split(","),
+      },
+    }
     : {};
 
   // Price filter
   const priceFilter: Prisma.ProductWhereInput =
     priceRange && priceRange !== "all" && priceRange in PRICE_RANGES
       ? {
-          price: {
-            gte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].min,
-            lte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].max,
-          },
-        }
+        price: {
+          gte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].min,
+          lte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].max,
+        },
+      }
       : {};
 
   // Tính toán phân trang
@@ -95,8 +128,8 @@ export async function getAllProducts({
       sort === "lowest"
         ? { price: "asc" }
         : sort === "highest"
-        ? { price: "desc" }
-        : { createdAt: "desc" },
+          ? { price: "desc" }
+          : { createdAt: "desc" },
     skip,
     take: limit,
   });
@@ -152,6 +185,14 @@ export async function getFeaturedProducts() {
     where: { isFeatured: true },
     orderBy: { createdAt: "desc" },
     take: 4,
+  });
+
+  return convertToPlainObject(data);
+}
+
+export async function getProductById(productId: string) {
+  const data = await prisma.product.findFirst({
+    where: { id: productId },
   });
 
   return convertToPlainObject(data);

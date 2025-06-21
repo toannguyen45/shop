@@ -22,6 +22,10 @@ const links = [
     title: "Khách Hàng",
     href: "/admin/users",
   },
+  {
+    title: "Tin tức",
+    href: "/admin/blogs",
+  },
 ];
 
 const MainNav = ({

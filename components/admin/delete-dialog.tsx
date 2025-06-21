@@ -41,25 +41,25 @@ const DeleteDialog = ({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button size="sm" variant="destructive" className="ml-2">
-          Delete
+          Xóa
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Bạn có chắc chắn xóa không?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone
+            Hành động  này không thể hoàn tác
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>Hủy</AlertDialogCancel>
           <Button
             variant="destructive"
             size="sm"
             disabled={isPending}
             onClick={handleDeleteClick}
           >
-            {isPending ? "Deleting..." : "Delete"}
+            {isPending ? "Đang xóa..." : "Xóa"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatId, formatPrice } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -12,6 +12,8 @@ import {
 import DeleteDialog from "@/components/admin/delete-dialog";
 import Pagination from "@/components/admin/pagination";
 import { deleteProduct, getAllProducts } from "@/actions/product.action";
+import PageHeader from "@/components/admin/page-header";
+import Image from "next/image";
 
 // import { requireAdmin } from '@/lib/auth-guard';
 
@@ -39,21 +41,9 @@ const AdminProductsPage = async (props: {
   console.log(products);
 
   return (
-    <>
-      <div className="flex justify-between my-10">
-        <div className="flex items-center gap-3">
-          <h1 className="font-bold text-2xl">Sản Phẩm</h1>
-          {searchText && (
-            <div>
-              Filtered by <i>&quot;{searchText}&quot;</i>{" "}
-              <Link href="/admin/products">
-                <Button variant="outline" size="sm">
-                  Xoá tìm kiếm
-                </Button>
-              </Link>
-            </div>
-          )}
-        </div>
+    <div className="flex flex-col gap-5">
+      <div className="flex justify-between">
+        <PageHeader>Sản Phẩm</PageHeader>
         <Button asChild variant="default">
           <Link href="/admin/products/create">Thêm Sản Phẩm +</Link>
         </Button>
@@ -73,7 +63,14 @@ const AdminProductsPage = async (props: {
         <TableBody>
           {products.data.map((product) => (
             <TableRow key={product.id}>
-              <TableCell>{formatId(product.id)}</TableCell>
+              <TableCell>
+                <Image
+                  alt="image-product"
+                  width={100}
+                  height={100}
+                  src={product.images[0]}
+                />
+              </TableCell>
               <TableCell>{product.name}</TableCell>
               <TableCell className="text-right">
                 {formatPrice(product.price)}
@@ -102,7 +99,7 @@ const AdminProductsPage = async (props: {
           ...(category && { category }),
         }}
       />
-    </>
+    </div>
   );
 };
 

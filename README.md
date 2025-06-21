@@ -13,6 +13,9 @@ pnpm dev
 # or
 bun dev
 ```
+```bash
+npx prisma migrate dev --name <tên_migration>
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

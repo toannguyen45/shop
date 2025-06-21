@@ -19,7 +19,7 @@ export type Product = {
   isFeatured: boolean;
   banner: string | null;
   createdAt: Date;
-  // OrderItem?: OrderItem[];
+  updatedAt?: Date;
 };
 
 export type TParamsGetProducts = {
@@ -29,3 +29,5 @@ export type TParamsGetProducts = {
   sort?: string;
   page?: string;
 };
+
+export type ProductFormData = z.infer<typeof insertProductSchema>

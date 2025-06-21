@@ -48,7 +48,7 @@ const Products = async ({
             </div>
 
             {/* Products Grid */}
-            <Suspense fallback={<p>Loading...</p>}>
+            <Suspense fallback={<p>Đang tải...</p>}>
               <ProductList params={formattedParams} />
             </Suspense>
           </div>

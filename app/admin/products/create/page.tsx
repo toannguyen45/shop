@@ -2,32 +2,29 @@ import React from "react";
 import ProductForm from "../components/product-form";
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import PageHeader from "@/components/admin/page-header";
+import MyForm from "../components/form";
 
 const CreateProduct = () => {
   return (
-    <>
-      <h2 className="h2-bold">Tạo Sản Phẩm</h2>
-      <div className="my-8">
-        <Card>
-          <CardHeader className="border-b-2">
-            <CardTitle className="mb-2">Thông Tin</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ProductForm />
-          </CardContent>
-          <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter>
-        </Card>
-      </div>
-    </>
+    <div className="flex flex-col gap-5">
+      <PageHeader>Tạo Sản Phẩm</PageHeader>
+
+      <Card>
+        <CardHeader className="border-b-2">
+          <CardTitle className="mb-2">Thông Tin</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {/* <ProductForm type='Create' /> */}
+          <MyForm type='Create'/>
+        </CardContent>
+      </Card>
+
+    </div>
   );
 };
 

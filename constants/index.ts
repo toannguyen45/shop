@@ -50,6 +50,18 @@ export const productDefaultValues = {
   banner: null,
 };
 
+export const blogDefaultValues = {
+  title: "",
+  slug: "",
+  content: "",
+  summary: "",
+  image: "",
+  isFeatured: false,
+  published: false,
+  tags: [],
+  authorId: "1a654bf1-9c4e-45e8-ab88-2df709dfce2e",
+};
+
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 12;
 
 export const PRICE_RANGES = {
