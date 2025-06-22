@@ -1,16 +1,19 @@
 "use client";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import TextAlign from "@tiptap/extension-text-align";
+
+import { useEditor, EditorContent, EditorContext } from "@tiptap/react";
+import { StarterKit } from "@tiptap/starter-kit"
+import { TextAlign } from "@tiptap/extension-text-align"
 import Heading from "@tiptap/extension-heading";
 import Highlight from "@tiptap/extension-highlight";
-import Image from "@tiptap/extension-image";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import ImageResize from "tiptap-extension-resize-image";
 import Youtube from "@tiptap/extension-youtube";
+import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
+import "@/components/tiptap-node/image-node/image-node.scss";
 import ToolBar from "./ToolBar";
 import "./styles.scss";
+import { ImageUploadNode } from "../tiptap-node/image-upload-node";
 
 interface RichTextEditorProps {
   content?: string;
@@ -45,11 +48,14 @@ export default function RichTextEditor({
         },
       }),
       Highlight,
-      Image,
       ImageResize,
-      Youtube.configure({
-        controls: false,
-        nocookie: true,
+      Youtube,
+      ImageUploadNode.configure({
+        accept: "image/*",
+        maxSize: MAX_FILE_SIZE,
+        limit: 3,
+        upload: handleImageUpload,
+        onError: (error) => console.error("Upload failed:", error),
       }),
     ],
     content: content,
@@ -66,9 +72,9 @@ export default function RichTextEditor({
   });
 
   return (
-    <div>
+    <EditorContext.Provider value={{ editor }}>
       <ToolBar editor={editor} />
-      <EditorContent editor={editor} />
-    </div>
+      <EditorContent editor={editor} role="presentation" />
+    </EditorContext.Provider>
   );
 }

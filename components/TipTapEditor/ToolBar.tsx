@@ -23,6 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { ImageUploadButton } from "../tiptap-ui/image-upload-button";
 
 interface ToolBarProps {
   editor: Editor | null;
@@ -30,9 +31,6 @@ interface ToolBarProps {
 
 export default function ToolBar({ editor }: ToolBarProps) {
   if (!editor) return null;
-
-  // const [height, setHeight] = useState(480)
-  // const [width, setWidth] = useState(640)
 
   const addImage = () => {
     const url = window.prompt("URL");
@@ -136,7 +134,7 @@ export default function ToolBar({ editor }: ToolBarProps) {
       icon: <ImageUp className="size-4" />,
       onClick: () => addImage(),
       preesed: editor.isActive("image"),
-      tooltip: "Insert Image",
+      tooltip: "Insert Image URL",
     },
     {
       icon: <Video className="size-4" />,
@@ -148,7 +146,7 @@ export default function ToolBar({ editor }: ToolBarProps) {
 
   return (
     <TooltipProvider>
-      <div className="border rounded-md p-1.5 mb-1 bg-slate-50 space-x-1 sticky top-10 z-50">
+      <div className="border rounded-md p-1.5 mb-1 bg-slate-50 space-x-1">
         {Options.map((option, i) => (
           <Tooltip key={i}>
             <TooltipTrigger asChild>
@@ -165,6 +163,7 @@ export default function ToolBar({ editor }: ToolBarProps) {
             </TooltipContent>
           </Tooltip>
         ))}
+        <ImageUploadButton text="Add" />
       </div>
     </TooltipProvider>
   );
