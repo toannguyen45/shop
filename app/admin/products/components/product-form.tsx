@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import slugify from "slugify";
-import { insertProductSchema, updateProductSchema } from "@/schemaValidations/product.schema";
+import { insertProductSchema } from "@/schemaValidations/product.schema";
 import { productDefaultValues } from "@/constants";
 import {
   Form,

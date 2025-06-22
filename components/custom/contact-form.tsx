@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/custom/contact-form.tsx
 "use client";
 
@@ -15,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 // import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
@@ -52,7 +54,9 @@ const ContactForm = () => {
       //   description: "Your message has been sent successfully.",
       // });
       form.reset();
-    } catch (error) {
+    } catch (error:any) {
+      toast.error(error.message);
+      
       // toast({
       //   title: "Error!",
       //   description: "Something went wrong. Please try again.",
@@ -67,7 +71,7 @@ const ContactForm = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-light mb-4">CONTACT US</h2>
           <p className="text-gray-600">
-            Have a question? We'd love to hear from you. Send us a message and we'll
+            Have a question? We would love to hear from you. Send us a message and we will
             respond as soon as possible.
           </p>
         </div>

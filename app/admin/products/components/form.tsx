@@ -85,9 +85,9 @@ export default function MyForm({
     }
   };
 
-  const images = form.watch("images");
-  const isFeatured = form.watch("isFeatured");
-  const banner = form.watch("banner");
+  // const images = form.watch("images");
+  // const isFeatured = form.watch("isFeatured");
+  // const banner = form.watch("banner");
 
   return (
     <Form {...form}>

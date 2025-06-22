@@ -10,6 +10,7 @@ import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 // import { useToast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 // import { handleErrorApi } from '@/lib/utils'
 // import { useAppContext } from '@/components/app-provider'
 // import { useLoginMutation } from '@/queries/useAuth'
@@ -26,7 +27,9 @@ export default function LoginForm() {
       password: ''
     }
   })
-  async function onSubmit(values: LoginBodyType) {
+  async function onSubmit(
+    // values: LoginBodyType
+  ) {
     // if (loginMutation.isPending) return
     try {
       // const result = await loginMutation.mutateAsync(values)
@@ -37,6 +40,7 @@ export default function LoginForm() {
       router.refresh()
     //   setIsAuth(true)
     } catch (error: any) {
+      toast.error(error.message)
     //   handleErrorApi({
     //     error,
     //     setError: form.setError

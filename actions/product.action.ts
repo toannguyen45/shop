@@ -6,7 +6,7 @@ import prisma from "@/db/prisma";
 import { revalidatePath } from "next/cache";
 import { convertToPlainObject, formatError } from "@/lib/utils";
 import { PAGE_SIZE, PRICE_RANGES } from "@/constants";
-import { Prisma } from "@/lib/generated/prisma";
+import { Prisma } from "@prisma/client";
 
 // Create a product
 export async function createProduct(data: z.infer<typeof insertProductSchema>) {
