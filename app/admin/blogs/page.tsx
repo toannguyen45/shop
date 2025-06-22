@@ -1,29 +1,30 @@
 import PageHeader from "@/components/admin/page-header";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { getAllBlogs } from "@/actions/blog.action";
 import { BlogTable } from "@/app/admin/blogs/components/blog-table";
 
-const BlogList = async (props: {
+interface BlogsPageProps {
   searchParams: Promise<{
-    page: string;
-    query: string;
-    sort: string;
-    sortDirection: string;
-    filter: string;
-    limit: string;
+    page?: string;
+    query?: string;
+    sort?: string;
+    sortDirection?: string;
+    filter?: string;
+    limit?: string;
   }>;
-}) => {
-  const searchParams = await props.searchParams;
+}
 
-  const page = Number(searchParams.page) || 1;
-  const searchText = searchParams.query || "";
-  const sort = searchParams.sort || "";
-  const sortDirection =
-    (searchParams.sortDirection as "asc" | "desc") || "desc";
-  const filter = searchParams.filter || "";
-  const limit = Number(searchParams.limit) || 10;
+async function BlogsContent({ searchParams }: BlogsPageProps) {
+  const params = await searchParams;
+
+  const page = Number(params.page) || 1;
+  const searchText = params.query || "";
+  const sort = params.sort || "";
+  const sortDirection = (params.sortDirection as "asc" | "desc") || "desc";
+  const filter = params.filter || "";
+  const limit = Number(params.limit) || 10;
 
   // Convert filter to boolean for isFeatured
   const isFeatured =
@@ -45,6 +46,18 @@ const BlogList = async (props: {
   ];
 
   return (
+    <BlogTable
+      data={blogs.data}
+      pagination={blogs.pagination}
+      currentSort={sort}
+      currentSortDirection={sortDirection}
+      filterOptions={filterOptions}
+    />
+  );
+}
+
+const BlogList = (props: BlogsPageProps) => {
+  return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-between">
         <PageHeader>Tin Tức</PageHeader>
@@ -52,14 +65,9 @@ const BlogList = async (props: {
           <Link href="/admin/blogs/create">Thêm Tin Tức +</Link>
         </Button>
       </div>
-
-      <BlogTable
-        data={blogs.data}
-        pagination={blogs.pagination}
-        currentSort={sort}
-        currentSortDirection={sortDirection}
-        filterOptions={filterOptions}
-      />
+      <Suspense fallback={<div>Đang tải...</div>}>
+        <BlogsContent searchParams={props.searchParams} />
+      </Suspense>
     </div>
   );
 };

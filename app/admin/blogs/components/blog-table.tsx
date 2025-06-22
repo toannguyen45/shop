@@ -1,10 +1,10 @@
 "use client"
 
 import { Blog } from "@/types/blog"
-import { DataTable } from "../../../../components/admin/data-table/data-table"
-import { PaginationControls } from "../../../../components/admin/data-table/pagination-controls"
-import { SearchInput } from "../../../../components/admin/data-table/search-input"
-import { FilterSelect } from "../../../../components/admin/data-table/filter-select"
+import { DataTable } from "@/components/admin/data-table/data-table"
+import { PaginationControls } from "@/components/admin/data-table/pagination-controls"
+import { SearchInput } from "@/components/admin/data-table/search-input"
+import { FilterSelect } from "@/components/admin/data-table/filter-select"
 import { createColumns } from "@/app/admin/blogs/components/columns"
 
 interface BlogTableProps {
