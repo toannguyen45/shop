@@ -14,7 +14,6 @@ import {
   AlignLeft,
   AlignRight,
   Highlighter,
-  Upload,
 } from "lucide-react";
 import { ListOrdered } from "lucide-react";
 import type { Editor } from "@tiptap/react";
