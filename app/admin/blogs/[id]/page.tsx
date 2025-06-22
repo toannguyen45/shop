@@ -16,8 +16,6 @@ const UpdateBlog = async (props: {
 
   if (!blog) return notFound();
 
-  console.log(blog, "blog:");
-
   return (
     <div className="flex flex-col gap-5">
       <PageHeader>Cập Nhật Tin Tức</PageHeader>

@@ -22,8 +22,6 @@ const UpdateProduct = async (props: {
 
     if (!product) return notFound();
 
-    console.log(product, 'product:');
-
     return (
         <div className="flex flex-col gap-5">
             <PageHeader>Cập Nhật Sản Phẩm</PageHeader>
