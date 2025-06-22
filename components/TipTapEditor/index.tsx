@@ -8,7 +8,9 @@ import Image from "@tiptap/extension-image";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import ImageResize from "tiptap-extension-resize-image";
+import Youtube from "@tiptap/extension-youtube";
 import ToolBar from "./ToolBar";
+import "./styles.scss";
 
 interface RichTextEditorProps {
   content?: string;
@@ -21,7 +23,11 @@ export default function RichTextEditor({
 }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure(),
+      StarterKit.configure({
+        heading: false,
+        bulletList: false,
+        orderedList: false,
+      }),
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
@@ -41,15 +47,20 @@ export default function RichTextEditor({
       Highlight,
       Image,
       ImageResize,
+      Youtube.configure({
+        controls: false,
+        nocookie: true,
+      }),
     ],
     content: content,
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: "min-h-[156px] border rounded-md bg-slate-50 py-2 px-3",
+        spellcheck: "false",
       },
     },
     onUpdate: ({ editor }) => {
-      console.log(editor.getHTML());
       onChange(editor.getHTML());
     },
   });

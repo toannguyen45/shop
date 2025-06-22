@@ -5,7 +5,7 @@ import {
   insertBlogSchema,
   updateBlogSchema,
 } from "@/schemaValidations/blog.schema";
-import { Prisma } from "@/lib/generated/prisma";
+import { Prisma } from "@prisma/client";
 import prisma from "@/db/prisma";
 import { revalidatePath } from "next/cache";
 import { convertToPlainObject, formatError } from "@/lib/utils";
@@ -61,17 +61,21 @@ export async function getAllBlogs({
   tags,
   published,
   sort,
+  sortDirection = "desc",
+  isFeatured,
 }: {
-  query: string;
+  query?: string;
   limit?: number;
   page: number;
   tags?: string;
   published?: boolean;
   sort?: string;
+  sortDirection?: "asc" | "desc";
+  isFeatured?: boolean;
 }) {
   // Query filter
   const queryFilter: Prisma.BlogWhereInput =
-    query && query !== "all"
+    query && query.trim() !== ""
       ? {
           OR: [
             {
@@ -108,6 +112,14 @@ export async function getAllBlogs({
         }
       : {};
 
+  // Featured filter
+  const featuredFilter: Prisma.BlogWhereInput =
+    isFeatured !== undefined
+      ? {
+          isFeatured: isFeatured,
+        }
+      : {};
+
   // Tính toán phân trang
   const skip = (page - 1) * limit;
 
@@ -117,8 +129,34 @@ export async function getAllBlogs({
       ...queryFilter,
       ...tagsFilter,
       ...publishedFilter,
+      ...featuredFilter,
     },
   });
+
+  // Xử lý sorting
+  let orderBy: Prisma.BlogOrderByWithRelationInput = { createdAt: "desc" }; // default
+
+  if (sort) {
+    switch (sort) {
+      case "title":
+        orderBy = { title: sortDirection };
+        break;
+      case "createdAt":
+        orderBy = { createdAt: sortDirection };
+        break;
+      case "updatedAt":
+        orderBy = { updatedAt: sortDirection };
+        break;
+      case "isFeatured":
+        orderBy = { isFeatured: sortDirection };
+        break;
+      case "published":
+        orderBy = { published: sortDirection };
+        break;
+      default:
+        orderBy = { createdAt: "desc" };
+    }
+  }
 
   // Lấy danh sách blogs
   const data = await prisma.blog.findMany({
@@ -126,6 +164,7 @@ export async function getAllBlogs({
       ...queryFilter,
       ...tagsFilter,
       ...publishedFilter,
+      ...featuredFilter,
     },
     include: {
       author: {
@@ -136,14 +175,7 @@ export async function getAllBlogs({
         },
       },
     },
-    orderBy:
-      sort === "oldest"
-        ? { createdAt: "asc" }
-        : sort === "newest"
-        ? { createdAt: "desc" }
-        : sort === "title"
-        ? { title: "asc" }
-        : { createdAt: "desc" }, // default sort
+    orderBy,
     skip,
     take: limit,
   });

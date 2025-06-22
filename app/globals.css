@@ -76,6 +76,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --black-contrast: oklch(0.145 0 0);
+  --purple: oklch(0.488 0.243 264.376);
 }
 
 .dark {
@@ -110,6 +112,27 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --black-contrast: oklch(0.985 0 0);
+  --purple: oklch(0.488 0.243 264.376);
+}
+
+/* Tiptap Editor Styles */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 @layer base {
@@ -133,11 +156,11 @@
   }
 }
 
-/* Uploadthing button text override */
-html.dark .upload-field .text-white {
-  color: #ffffff !important;
+/* UploadThing Button Overrides */
+.ut-button {
+  @apply bg-transparent border-0 p-2 h-8 w-8 rounded hover:bg-gray-200;
 }
 
-.upload-field .text-white {
-  color: #000 !important;
+.ut-allowed-content {
+  display: none;
 }

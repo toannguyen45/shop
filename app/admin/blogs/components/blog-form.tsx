@@ -29,7 +29,6 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { createBlog, updateBlog } from "@/actions/blog.action";
 import RichTextEditor from "@/components/TipTapEditor";
-import RichTextEditorVer2 from "@/components/TipTapEditorVerTwo/rich-text-editor";
 
 export default function BlogForm({
   type,
@@ -196,10 +195,6 @@ export default function BlogForm({
             <FormItem>
               <FormLabel>Nội Dung</FormLabel>
               <FormControl>
-                {/* <RichTextEditorVer2
-                  content={field.value}
-                  onChange={field.onChange}
-                /> */}
                 <RichTextEditor
                   content={field.value}
                   onChange={field.onChange}
