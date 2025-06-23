@@ -29,6 +29,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { createBlog, updateBlog } from "@/actions/blog.action";
 import RichTextEditor from "@/components/TipTapEditor";
+import slugify from "slugify";
 
 export default function BlogForm({
   type,
@@ -48,19 +49,10 @@ export default function BlogForm({
     defaultValues: blog && type === "Update" ? blog : blogDefaultValues,
   });
 
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .trim();
-  };
-
   const handleTitleChange = (title: string) => {
     form.setValue("title", title);
     if (!blog) {
-      const slug = generateSlug(title);
+      const slug = slugify(title, { lower: true, strict: true });
       form.setValue("slug", slug);
     }
   };

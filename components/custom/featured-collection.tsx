@@ -15,7 +15,7 @@ const FeaturedCollection = () => {
       />
       <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
         <div className="text-center text-white">
-          <h2 className="text-4xl md:text-6xl font-light mb-6">
+          <h2 className="text-5xl md:text-7xl font-medium mb-6">
             SUMMER COLLECTION
           </h2>
           <Link

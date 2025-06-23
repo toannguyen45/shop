@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface SlideData {
   image: string;
@@ -147,10 +147,10 @@ const Carousel = () => {
                 style={{ position: "absolute" }}
               />
               <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white p-4 sm:p-6 md:p-8">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-9xl uppercase font-bold mb-2 sm:mb-3 md:mb-4 text-center">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold !leading-[1.2] uppercase mb-2 sm:mb-3 md:mb-4 text-center">
                   {slide.title}
                 </h2>
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-center max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-2xl">
+                <p className="text-[17px] md:text-lg text-center max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-2xl">
                   {slide.description}
                 </p>
               </div>
@@ -159,7 +159,7 @@ const Carousel = () => {
         ))}
       </div>
 
-      <div className="hidden sm:block">
+      {/* <div className="hidden sm:block">
         <button
           onClick={prevSlide}
           className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-1 sm:p-2 transition-all transform hover:scale-110"
@@ -174,7 +174,7 @@ const Carousel = () => {
         >
           <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
         </button>
-      </div>
+      </div> */}
 
       <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
         {slides.map((_, index) => (

@@ -222,3 +222,19 @@ export async function deleteBlog(id: string) {
     return { success: false, message: formatError(error) };
   }
 }
+
+export async function getBlogBySlug(slug: string) {
+  const data = await prisma.blog.findFirst({
+    where: { slug },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+  return convertToPlainObject(data);
+}

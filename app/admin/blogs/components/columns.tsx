@@ -23,6 +23,13 @@ interface ColumnsProps {
   currentSort?: string;
   currentSortDirection?: "asc" | "desc";
 }
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
 
 export const createColumns = ({
   currentSort,
@@ -135,8 +142,9 @@ export const createColumns = ({
       </SortableHeader>
     ),
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      return <div className="text-sm">{date.toLocaleDateString("vi-VN")}</div>;
+      return (
+        <div className="text-sm">{formatDate(row.getValue("createdAt"))}</div>
+      );
     },
   },
   {
@@ -158,7 +166,7 @@ export const createColumns = ({
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(blog.id)}
             >
-              Copy blog ID
+             Sao chép ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>

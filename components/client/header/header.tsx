@@ -12,7 +12,7 @@ const Header = () => {
     <header className="w-full border-b border-gray-200">
       {/* Top Header */}
       <div className="bg-black text-white">
-        <div className="container mx-auto px-6 py-2">
+        <div className="max-w-screen-xl mx-auto px-4 py-2">
           <div className="flex justify-between items-center">
             {/* Language Selector */}
             <div className="flex space-x-2 flex-1">
@@ -41,7 +41,7 @@ const Header = () => {
 
       {/* Main Navbar */}
       <nav className="h-16 bg-background border-b">
-        <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4">
           <Logo />
           {/* Desktop Menu */}
           <NavMenu className="hidden md:block" />

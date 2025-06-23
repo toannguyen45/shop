@@ -36,7 +36,7 @@ const ReadyToWear = () => {
   return (
     <section className="container mx-auto px-6 py-16">
       <div className="flex justify-between items-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-light">READY-TO-WEAR</h2>
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">READY-TO-WEAR</h2>
         <Link 
           href="/collections/ready-to-wear" 
           className="flex items-center space-x-2 text-sm hover:text-gray-600"

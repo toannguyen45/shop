@@ -1,18 +1,18 @@
-import Carousel from "@/components/custom/carousel";
+// import Hero from "@/components/client/hero";
+import Carousel from "@/components/client/carousel";
 import Categories from "@/components/custom/categories";
-import ContactForm from "@/components/custom/contact-form";
+import ContactForm from "@/components/client/contact-form";
 import FeaturedCollection from "@/components/custom/featured-collection";
-import ReadyToWear from "@/components/custom/ready-to-wear";
+import ReadyToWear from "@/components/client/ready-to-wear";
 
 export default function Home() {
   return (
     <>
       <Carousel />
+      {/* <Hero /> */}
       <ReadyToWear />
-      {/* <NewArrivals /> */}
       <Categories />
       <FeaturedCollection />
-      {/* <InstagramFeed /> */}
       <ContactForm />
     </>
   );
