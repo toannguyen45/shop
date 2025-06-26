@@ -154,6 +154,7 @@ export default function ToolBar({ editor }: ToolBarProps) {
                 size="sm"
                 pressed={option.preesed}
                 onPressedChange={option.onClick}
+                className={option.preesed ? "is-active" : ""}
               >
                 {option.icon}
               </Toggle>

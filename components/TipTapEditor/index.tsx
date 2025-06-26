@@ -1,12 +1,9 @@
 "use client";
 
 import { useEditor, EditorContent, EditorContext } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit"
-import { TextAlign } from "@tiptap/extension-text-align"
-import Heading from "@tiptap/extension-heading";
+import { StarterKit } from "@tiptap/starter-kit";
+import { TextAlign } from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
 import ImageResize from "tiptap-extension-resize-image";
 import Youtube from "@tiptap/extension-youtube";
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
@@ -14,6 +11,7 @@ import "@/components/tiptap-node/image-node/image-node.scss";
 import ToolBar from "./ToolBar";
 import "./styles.scss";
 import { ImageUploadNode } from "../tiptap-node/image-upload-node";
+import { useEffect } from "react";
 
 interface RichTextEditorProps {
   content?: string;
@@ -27,25 +25,22 @@ export default function RichTextEditor({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: false,
-        bulletList: false,
-        orderedList: false,
+        heading: {
+          levels: [1, 2, 3],
+        },
+        bulletList: {
+          HTMLAttributes: {
+            class: "list-disc ml-3",
+          },
+        },
+        orderedList: {
+          HTMLAttributes: {
+            class: "list-decimal ml-3",
+          },
+        },
       }),
       TextAlign.configure({
         types: ["heading", "paragraph"],
-      }),
-      Heading.configure({
-        levels: [1, 2, 3],
-      }),
-      OrderedList.configure({
-        HTMLAttributes: {
-          class: "list-decimal ml-3",
-        },
-      }),
-      BulletList.configure({
-        HTMLAttributes: {
-          class: "list-disc ml-3",
-        },
       }),
       Highlight,
       ImageResize,
@@ -70,6 +65,12 @@ export default function RichTextEditor({
       onChange(editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+  }, [editor]);
 
   return (
     <EditorContext.Provider value={{ editor }}>

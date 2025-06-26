@@ -143,18 +143,6 @@
   body {
     @apply bg-background text-foreground;
   }
-  h1 {
-    @apply text-2xl font-bold;
-  }
-  h2 {
-    @apply text-xl font-bold;
-  }
-  h3 {
-    @apply text-lg font-bold;
-  }
-  pre {
-    @apply p-2 bg-foreground text-background rounded-md;
-  }
 }
 
 /* UploadThing Button Overrides */
@@ -164,4 +152,10 @@
 
 .ut-allowed-content {
   display: none;
+}
+
+.is-active {
+  background-color: #e0e7ff;
+  color: #1d4ed8;
+  border: 1px solid #1d4ed8;
 }

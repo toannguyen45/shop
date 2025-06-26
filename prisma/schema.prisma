@@ -149,11 +149,5 @@ model Blog {
   authorId   String   @db.Uuid
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags       String[]
-  // tags        Tag[]    @relation("PostTags")
 }
 
-// model Tag {
-//   id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-//   name  String  @unique
-//   blogs Blog[]  @relation("PostTags")
-// }

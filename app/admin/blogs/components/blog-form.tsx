@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { toast } from "sonner";
@@ -24,12 +25,14 @@ import { blogDefaultValues } from "@/constants";
 import { Blog } from "@/types/blog";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, X } from "lucide-react";
+import { Loader2, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { createBlog, updateBlog } from "@/actions/blog.action";
 import RichTextEditor from "@/components/TipTapEditor";
 import slugify from "slugify";
+import Image from "next/image";
+import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 
 export default function BlogForm({
   type,
@@ -44,16 +47,56 @@ export default function BlogForm({
 
   const [tagInput, setTagInput] = useState("");
 
+  const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(insertBlogSchema),
     defaultValues: blog && type === "Update" ? blog : blogDefaultValues,
   });
 
-  const handleTitleChange = (title: string) => {
-    form.setValue("title", title);
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const title = e.target.value;
+    form.setValue("title", title, { shouldValidate: true });
     if (!blog) {
       const slug = slugify(title, { lower: true, strict: true });
-      form.setValue("slug", slug);
+      form.setValue("slug", slug, { shouldValidate: true });
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const imageUrl = await uploadToCloudinary(file);
+      form.setValue("image", imageUrl, { shouldValidate: true });
+      toast.success("Image uploaded successfully");
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleImageRemove = async () => {
+    const currentImage = form.getValues("image");
+    if (!currentImage) return;
+
+    setIsDeleting(true);
+    try {
+      const deleted = await deleteFromCloudinary(currentImage);
+      if (deleted) {
+        form.setValue("image", "");
+        toast.success("Image deleted successfully");
+      } else {
+        toast.error("Failed to delete image from storage");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -134,9 +177,70 @@ export default function BlogForm({
                   placeholder=""
                   type=""
                   {...field}
-                  onChange={(e) => handleTitleChange(e.target.value)}
+                  onChange={(e) => {
+                    field.onChange(e); 
+                    handleTitleChange(e);
+                  }}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Image Upload */}
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Ảnh bìa</FormLabel>
+              <FormControl>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={isUploading}
+                    />
+                    {isUploading && (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span className="text-sm text-muted-foreground">
+                          Đang tải...
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  {field.value && (
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={field.value || "/placeholder.svg"}
+                        alt="Featured image"
+                        fill
+                        className="object-cover rounded-md"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-2 right-2"
+                        onClick={handleImageRemove}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <X className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </FormControl>
+              <FormDescription>
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -167,7 +271,7 @@ export default function BlogForm({
               <FormLabel>Tóm tắt</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Brief summary of your content"
+                  placeholder="Nhập nội dung tóm tắt"
                   className="resize-none"
                   rows={3}
                   {...field}
@@ -206,7 +310,7 @@ export default function BlogForm({
                 <div className="space-y-3">
                   <div className="flex gap-2">
                     <Input
-                      placeholder="Add a tag"
+                      placeholder="Gõ tag sau đó nhấn enter"
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={handleKeyPress}
@@ -265,8 +369,6 @@ export default function BlogForm({
               <div className="space-y-1 leading-none">
                 <FormLabel>Nổi bật hay không?</FormLabel>
                 <FormDescription>
-                  You can manage your mobile notifications in the mobile
-                  settings page.
                 </FormDescription>
                 <FormMessage />
               </div>
@@ -287,8 +389,6 @@ export default function BlogForm({
               <div className="space-y-1 leading-none">
                 <FormLabel>Xuất bản hay không?</FormLabel>
                 <FormDescription>
-                  You can manage your mobile notifications in the mobile
-                  settings page.
                 </FormDescription>
                 <FormMessage />
               </div>
