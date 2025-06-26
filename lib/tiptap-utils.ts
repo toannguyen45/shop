@@ -23,17 +23,44 @@ export const handleImageUpload = async (
     );
   }
 
-  // For demo/testing: Simulate upload progress
-  for (let progress = 0; progress <= 100; progress += 10) {
-    if (abortSignal?.aborted) {
-      throw new Error("Upload cancelled");
-    }
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    onProgress?.({ progress });
+  // Validate file type
+  if (!file.type.startsWith("image/")) {
+    throw new Error("File must be an image");
   }
 
-  return "/images/placeholder-image.png";
+  // Create FormData for upload to Cloudinary
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append(
+    "upload_preset",
+    process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!
+  );
 
-  // Uncomment for production use:
-  // return convertFileToBase64(file, abortSignal);
+  // Optionally, you can add folder or other Cloudinary params here
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+    {
+      method: "POST",
+      body: formData,
+      signal: abortSignal,
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message || `Upload failed: ${response.statusText}`
+    );
+  }
+
+  const data = await response.json();
+  if (!data.secure_url) {
+    throw new Error("No file URL returned from Cloudinary");
+  }
+
+  // Simulate progress completion for consistency
+  onProgress?.({ progress: 100 });
+
+  return data.secure_url;
 };
