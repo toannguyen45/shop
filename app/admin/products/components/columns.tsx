@@ -1,19 +1,183 @@
 "use client";
 
-import { Product } from "@/types/product";
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 
-export const columns: ColumnDef<Product>[] = [
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { SortableHeader } from "@/components/admin/data-table/sortable-header";
+import Link from "next/link";
+import DeleteDialog from "@/components/admin/delete-dialog";
+import { Product } from "@/types/product";
+import { deleteProduct } from "@/actions/product.action";
+import Image from "next/image";
+
+interface ColumnsProps {
+  currentSort?: string;
+  currentSortDirection?: "asc" | "desc";
+}
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export const createColumns = ({
+  currentSort,
+  currentSortDirection,
+}: ColumnsProps): ColumnDef<Product>[] => [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "images",
+    header: "Ảnh",
+    cell: ({ row }) => {
+      const images = row.original.images as string[];
+      const imageUrl = images && images.length > 0 ? images[0] : null;
+      return (
+        <>
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={row.original.name}
+              width={48}
+              height={48}
+              className="object-cover rounded"
+              style={{ minWidth: 48, minHeight: 48 }}
+            />
+          ) : (
+            <div className="w-12 h-12 bg-muted flex items-center justify-center rounded text-xs text-muted-foreground">
+              No Image
+            </div>
+          )}
+        </>
+      );
+    },
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "name",
+    header: () => (
+      <SortableHeader
+        column="name"
+        currentSort={currentSort}
+        currentSortDirection={currentSortDirection}
+      >
+        Tên
+      </SortableHeader>
+    ),
+    cell: ({ row }) => (
+      <div className="max-w-[300px]">
+        <div className="font-medium truncate">{row.getValue("name")}</div>
+      </div>
+    ),
   },
   {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "category",
+    header: "Danh Mục",
+    cell: ({ row }) => (
+      <div className="max-w-[300px]">
+        <div className="text-sm text-muted-foreground truncate mt-1">
+          {row.original.category}
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "brand",
+    header: "Hãng",
+    cell: ({ row }) => (
+      <div className="max-w-[300px]">
+        <div className="text-sm text-muted-foreground truncate mt-1">
+          {row.original.brand}
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "slug",
+    header: "Slug",
+    cell: ({ row }) => {
+      const product = row.original;
+      return <div className="font-mono text-sm">{product.slug}</div>;
+    },
+  },
+  {
+    accessorKey: "isFeatured",
+    header: () => (
+      <SortableHeader
+        column="isFeatured"
+        currentSort={currentSort}
+        currentSortDirection={currentSortDirection}
+      >
+        Nổi Bật
+      </SortableHeader>
+    ),
+    cell: ({ row }) => {
+      const isFeatured = row.getValue("isFeatured") as boolean;
+      return (
+        <Badge variant={isFeatured ? "default" : "outline"}>
+          {isFeatured ? "Có" : "Không"}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: () => (
+      <SortableHeader
+        column="createdAt"
+        currentSort={currentSort}
+        currentSortDirection={currentSortDirection}
+      >
+        Ngày Tạo
+      </SortableHeader>
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="text-sm">{formatDate(row.getValue("createdAt"))}</div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const product = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Thao Tác</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(product.id)}
+            >
+              Sao chép ID
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/products/${product.id}`}>Sửa sản phẩm</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-red-600">
+              <DeleteDialog id={product.id} action={deleteProduct} />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];

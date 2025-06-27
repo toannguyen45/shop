@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getAllBlogs } from "@/actions/blog.action";
+import { getAllBlogsCached } from "@/actions/blog.action";
 import Link from "next/link";
 
 interface BlogsPageProps {
@@ -29,7 +29,7 @@ const BlogList = async ({ searchParams }: BlogsPageProps) => {
   const isFeatured =
     filter === "true" ? true : filter === "false" ? false : undefined;
 
-  const blogs = await getAllBlogs({
+  const blogsPromise = await getAllBlogsCached({
     query: searchText,
     page,
     sort,
@@ -37,6 +37,9 @@ const BlogList = async ({ searchParams }: BlogsPageProps) => {
     isFeatured,
     limit,
   });
+
+  // Await both in parallel (if you have more async work, add here)
+  const [blogs] = await Promise.all([blogsPromise]);
 
   const formatDate = (dateString: Date) => {
     return new Date(dateString).toLocaleDateString("vi-VN", {
@@ -50,7 +53,7 @@ const BlogList = async ({ searchParams }: BlogsPageProps) => {
     <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
       {blogs.data.map((blog) => (
         <Link href={`/blogs/${blog.slug}`} key={blog.id}>
-          <Card className="shadow-none py-0">
+          <Card className="shadow-none py-0 h-full flex flex-col">
             <CardHeader className="p-2">
               <div className="aspect-video bg-muted rounded-lg w-full" />
             </CardHeader>

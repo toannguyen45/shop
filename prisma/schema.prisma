@@ -28,6 +28,7 @@ model Product {
   isFeatured  Boolean     @default(false)
   banner      String?
   createdAt   DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime    @updatedAt
   OrderItem   OrderItem[]
 }
 
@@ -150,4 +151,3 @@ model Blog {
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags       String[]
 }
-

@@ -2,6 +2,7 @@ import { getBlogBySlug } from "@/actions/blog.action";
 import PageBanner from "@/components/client/page-banner";
 import ReadingProgress from "@/components/custom/reading-progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import prisma from "@/db/prisma";
 import { User } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -13,6 +14,16 @@ interface BlogDetailPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateStaticParams() {
+  const blogs = await prisma.blog.findMany({
+    select: { slug: true },
+  });
+
+  return blogs.map((blog) => ({
+    slug: blog.slug,
+  }));
 }
 
 export async function generateMetadata({
@@ -39,22 +50,21 @@ export async function generateMetadata({
         title: blog.title,
         description: blog.content,
         type: "article",
-        // publishedTime: blog.publishedAt,
-        // authors: [blog.author.name],
-        // images: [
-        //   {
-        //     url: blog.featuredImage,
-        //     width: 1200,
-        //     height: 630,
-        //     alt: blog.title,
-        //   },
-        // ],
+        authors: [blog.author.name],
+        images: [
+          {
+            url: blog.image ?? "",
+            width: 1200,
+            height: 630,
+            alt: blog.title,
+          },
+        ],
       },
       twitter: {
         card: "summary_large_image",
         title: blog.title,
         description: blog.content,
-        // images: [blog.featuredImage],
+        images: blog.image ? [blog.image] : [],
       },
       alternates: {
         canonical: `/blogs/${slug}`,

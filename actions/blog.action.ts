@@ -7,7 +7,7 @@ import {
 } from "@/schemaValidations/blog.schema";
 import { Prisma } from "@prisma/client";
 import prisma from "@/db/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_cache } from "next/cache";
 import { convertToPlainObject, formatError } from "@/lib/utils";
 import { PAGE_SIZE } from "@/constants";
 
@@ -54,7 +54,7 @@ export async function updateBlog(data: z.infer<typeof updateBlogSchema>) {
 }
 
 // Get all blogs
-export async function getAllBlogs({
+async function getAllBlogs({
   query,
   limit = PAGE_SIZE,
   page,
@@ -192,6 +192,12 @@ export async function getAllBlogs({
     },
   };
 }
+
+export const getAllBlogsCached = unstable_cache(
+  getAllBlogs,
+  ["blogs"], // cache key prefix
+  { revalidate: 60 * 60 * 2 } // revalidate two hours
+);
 
 export async function getBlogById(blogId: string) {
   const data = await prisma.blog.findFirst({

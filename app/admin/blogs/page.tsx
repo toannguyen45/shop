@@ -2,7 +2,7 @@ import PageHeader from "@/components/admin/page-header";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { getAllBlogs } from "@/actions/blog.action";
+import { getAllBlogsCached } from "@/actions/blog.action";
 import { BlogTable } from "@/app/admin/blogs/components/blog-table";
 
 interface BlogsPageProps {
@@ -30,7 +30,7 @@ async function BlogsContent({ searchParams }: BlogsPageProps) {
   const isFeatured =
     filter === "true" ? true : filter === "false" ? false : undefined;
 
-  const blogs = await getAllBlogs({
+  const blogsPromise = await getAllBlogsCached({
     query: searchText,
     page,
     sort,
@@ -38,6 +38,8 @@ async function BlogsContent({ searchParams }: BlogsPageProps) {
     isFeatured,
     limit,
   });
+
+  const [blogs] = await Promise.all([blogsPromise]);
 
   // Filter options for isFeatured
   const filterOptions = [

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import {Montserrat} from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/custom/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const montserrat = Montserrat({
   variable: "--font-montserrat-mono",
   subsets: ["latin"],
-})
+});
 
 // const nunito = Nunito({
 //   variable: "--font-nunito-mono",
@@ -31,9 +31,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`${montserrat.className} antialiased`}
+        className={`${montserrat.className} flex flex-col overflow-y-auto overflow-x-hidden antialiased`}
       >
         <ThemeProvider
           attribute="class"

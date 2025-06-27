@@ -1,7 +1,10 @@
 "use server";
 
 import { z } from "zod";
-import { insertProductSchema, updateProductSchema } from "@/schemaValidations/product.schema";
+import {
+  insertProductSchema,
+  updateProductSchema,
+} from "@/schemaValidations/product.schema";
 import prisma from "@/db/prisma";
 import { revalidatePath } from "next/cache";
 import { convertToPlainObject, formatError } from "@/lib/utils";
@@ -33,18 +36,18 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
       where: { id: product.id },
     });
 
-    if (!productExists) throw new Error('Product not found');
+    if (!productExists) throw new Error("Product not found");
 
     await prisma.product.update({
       where: { id: product.id },
       data: product,
     });
 
-    revalidatePath('/admin/products');
+    revalidatePath("/admin/products");
 
     return {
       success: true,
-      message: 'Product updated successfully',
+      message: "Product updated successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -66,6 +69,8 @@ export async function getAllProducts({
   category,
   priceRange,
   sort,
+  sortDirection = "desc",
+  isFeatured,
 }: {
   query: string;
   limit?: number;
@@ -73,36 +78,47 @@ export async function getAllProducts({
   category?: string;
   priceRange?: string;
   sort?: string;
+  sortDirection?: "asc" | "desc";
+  isFeatured?: boolean;
 }) {
   // Query filter
   const queryFilter: Prisma.ProductWhereInput =
     query && query !== "all"
       ? {
-        name: {
-          contains: query,
-          mode: "insensitive",
-        } as Prisma.StringFilter,
-      }
+          name: {
+            contains: query,
+            mode: "insensitive",
+          } as Prisma.StringFilter,
+        }
       : {};
 
   // Category filter
-  const categoryFilter: Prisma.ProductWhereInput = category && category !== "all"
-    ? {
-      category: {
-        in: category.split(","),
-      },
-    }
-    : {};
+  const categoryFilter: Prisma.ProductWhereInput =
+    category && category !== "all"
+      ? {
+          category: {
+            in: category.split(","),
+          },
+        }
+      : {};
 
   // Price filter
   const priceFilter: Prisma.ProductWhereInput =
     priceRange && priceRange !== "all" && priceRange in PRICE_RANGES
       ? {
-        price: {
-          gte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].min,
-          lte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].max,
-        },
-      }
+          price: {
+            gte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].min,
+            lte: PRICE_RANGES[priceRange as keyof typeof PRICE_RANGES].max,
+          },
+        }
+      : {};
+
+  // Featured filter
+  const featuredFilter: Prisma.ProductWhereInput =
+    isFeatured !== undefined
+      ? {
+          isFeatured: isFeatured,
+        }
       : {};
 
   // Tính toán phân trang
@@ -114,8 +130,31 @@ export async function getAllProducts({
       ...queryFilter,
       ...categoryFilter,
       ...priceFilter,
+      ...featuredFilter,
     },
   });
+
+  // Xử lý sorting
+  let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" }; // default
+
+  if (sort) {
+    switch (sort) {
+      case "name":
+        orderBy = { name: sortDirection };
+        break;
+      case "createdAt":
+        orderBy = { createdAt: sortDirection };
+        break;
+      // case "updatedAt":
+      //   orderBy = { updatedAt: sortDirection };
+      //   break;
+      case "isFeatured":
+        orderBy = { isFeatured: sortDirection };
+        break;
+      default:
+        orderBy = { createdAt: "desc" };
+    }
+  }
 
   // Lấy danh sách sản phẩm
   const data = await prisma.product.findMany({
@@ -123,13 +162,10 @@ export async function getAllProducts({
       ...queryFilter,
       ...categoryFilter,
       ...priceFilter,
+      ...featuredFilter,
     },
-    orderBy:
-      sort === "lowest"
-        ? { price: "asc" }
-        : sort === "highest"
-          ? { price: "desc" }
-          : { createdAt: "desc" },
+    include: {},
+    orderBy,
     skip,
     take: limit,
   });
