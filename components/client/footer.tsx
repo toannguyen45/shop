@@ -162,9 +162,9 @@ const Footer = () => {
         <div className="py-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-x-8 gap-y-10 px-6 xl:px-0">
           <div className="col-span-full xl:col-span-2">
             {/* Logo */}
-            <h2 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-regular text-left">
+            <h1 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-regular text-left">
               TWBlocks™
-            </h2>
+            </h1>
 
             <p className="mt-4 text-background/75">
               Design amazing digital experiences that create more happy in the
@@ -173,49 +173,57 @@ const Footer = () => {
           </div>
 
           {footerSections.map(({ title, links }) => (
-            <div key={title}>
-              <h6 className="font-semibold">{title}</h6>
+            <nav key={title} aria-label={title}>
+              <h2 className="font-semibold text-lg">{title}</h2>
               <ul className="mt-6 space-y-4">
-                {links.map(({ title, href }) => (
-                  <li key={title}>
+                {links.map(({ title: linkTitle, href }) => (
+                  <li key={linkTitle}>
                     <Link
                       href={href}
                       className="text-background/75"
-                      // className="text-muted-foreground hover:text-foreground"
+                      aria-label={linkTitle}
                     >
-                      {title}
+                      {linkTitle}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
         <Separator />
         <div className="py-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-x-2 gap-y-5 px-6 xl:px-0">
           {/* Copyright */}
           <span className="text-muted-foreground">
-            &copy; {new Date().getFullYear()}{" "}
-            <Link href="/" target="_blank">
+            &copy; {new Date().getFullYear()} {" "}
+            <Link href="/" target="_blank" aria-label="Shadcn UI Blocks homepage">
               Shadcn UI Blocks
             </Link>
             . All rights reserved.
           </span>
 
-          <div className="flex items-center gap-5 text-muted-foreground">
-            <Link href="#" target="_blank">
-              <TwitterIcon className="h-5 w-5" />
-            </Link>
-            <Link href="#" target="_blank">
-              <DribbbleIcon className="h-5 w-5" />
-            </Link>
-            <Link href="#" target="_blank">
-              <TwitchIcon className="h-5 w-5" />
-            </Link>
-            <Link href="#" target="_blank">
-              <GithubIcon className="h-5 w-5" />
-            </Link>
-          </div>
+          <ul className="flex items-center gap-5 text-muted-foreground">
+            <li>
+              <Link href="#" target="_blank" aria-label="Twitter">
+                <TwitterIcon className="h-5 w-5" />
+              </Link>
+            </li>
+            <li>
+              <Link href="#" target="_blank" aria-label="Dribbble">
+                <DribbbleIcon className="h-5 w-5" />
+              </Link>
+            </li>
+            <li>
+              <Link href="#" target="_blank" aria-label="Twitch">
+                <TwitchIcon className="h-5 w-5" />
+              </Link>
+            </li>
+            <li>
+              <Link href="#" target="_blank" aria-label="GitHub">
+                <GithubIcon className="h-5 w-5" />
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

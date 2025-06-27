@@ -59,7 +59,7 @@ export const blogDefaultValues = {
   isFeatured: false,
   published: false,
   tags: [],
-  authorId: "1a654bf1-9c4e-45e8-ab88-2df709dfce2e",
+  authorId: "a54484ba-aa60-4d3e-a773-42464a0605f9",
 };
 
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 12;

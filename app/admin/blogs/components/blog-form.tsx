@@ -178,7 +178,7 @@ export default function BlogForm({
                   type=""
                   {...field}
                   onChange={(e) => {
-                    field.onChange(e); 
+                    field.onChange(e);
                     handleTitleChange(e);
                   }}
                 />
@@ -239,8 +239,7 @@ export default function BlogForm({
                   )}
                 </div>
               </FormControl>
-              <FormDescription>
-              </FormDescription>
+              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -368,8 +367,7 @@ export default function BlogForm({
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>Nổi bật hay không?</FormLabel>
-                <FormDescription>
-                </FormDescription>
+                <FormDescription></FormDescription>
                 <FormMessage />
               </div>
             </FormItem>
@@ -388,14 +386,15 @@ export default function BlogForm({
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>Xuất bản hay không?</FormLabel>
-                <FormDescription>
-                </FormDescription>
+                <FormDescription></FormDescription>
                 <FormMessage />
               </div>
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">
+          {type == "Create" ? "Tạo tin tức" : "Cập nhật tin tức"}
+        </Button>
       </form>
     </Form>
   );

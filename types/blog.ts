@@ -19,4 +19,10 @@ export type Blog = {
   authorId: string;
   createdAt: Date;
   updatedAt: Date;
+  author?: {
+    id: string;
+    name: string;
+    email: string;
+    image?: string | null;
+  };
 };

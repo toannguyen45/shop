@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  // output   = "../lib/generated/prisma"
 }
 
 datasource db {
@@ -100,6 +93,7 @@ model Cart {
   shippingPrice Int      @default(0)
   taxPrice      Int      @default(0)
   createdAt     DateTime @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime @updatedAt
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -118,6 +112,7 @@ model Order {
   isDelivered     Boolean     @default(false)
   deliveredAt     DateTime?   @db.Timestamp(6)
   createdAt       DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime    @updatedAt
   user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   orderitems      OrderItem[]
 }

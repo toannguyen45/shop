@@ -172,6 +172,7 @@ async function getAllBlogs({
           id: true,
           name: true,
           email: true,
+          image: true
         },
       },
     },

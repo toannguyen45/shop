@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getAllBlogsCached } from "@/actions/blog.action";
 import Link from "next/link";
+import Image from "next/image";
 
 interface BlogsPageProps {
   searchParams: Promise<{
@@ -55,7 +56,20 @@ const BlogList = async ({ searchParams }: BlogsPageProps) => {
         <Link href={`/blogs/${blog.slug}`} key={blog.id}>
           <Card className="shadow-none py-0 h-full flex flex-col">
             <CardHeader className="p-2">
-              <div className="aspect-video bg-muted rounded-lg w-full" />
+              {blog.image ? (
+                <Image
+                  decoding="sync"
+                  src={blog.image}
+                  alt={blog.title}
+                  width={400}
+                  height={225}
+                  quality={65}
+                  className="aspect-video bg-muted rounded-lg w-full object-cover"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              ) : (
+                <div className="aspect-video bg-muted rounded-lg w-full" />
+              )}
             </CardHeader>
             <CardContent className="pt-4 pb-5">
               {blog.tags.slice(0, 2).map((tag) => (
@@ -72,9 +86,19 @@ const BlogList = async ({ searchParams }: BlogsPageProps) => {
 
               <div className="mt-6 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="h-10 w-10 rounded-full bg-muted"></div>
+                  {blog.author?.image ? (
+                    <Image
+                      src={blog.author.image}
+                      alt={blog.author.name}
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 rounded-full object-cover bg-muted"
+                    />
+                  ) : (
+                    <div className="h-10 w-10 rounded-full bg-muted" />
+                  )}
                   <span className="text-muted-foreground font-semibold">
-                    John Doe
+                    {blog.author?.name || "Unknown"}
                   </span>
                 </div>
 

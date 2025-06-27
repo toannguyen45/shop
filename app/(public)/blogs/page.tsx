@@ -1,11 +1,11 @@
 import PageBanner from "@/components/client/page-banner";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import BlogList from "./components/blog-list";
@@ -48,8 +48,8 @@ const Blog01Page = (props: BlogsPageProps) => {
 
       <div className="max-w-screen-xl mx-auto py-4 px-4">
         <div className="flex items-end justify-between">
-          <h2 className="text-3xl font-bold tracking-tight">Posts</h2>
-          <Select defaultValue="recommended">
+          <h2 className="text-3xl font-bold tracking-tight">Tin Tức</h2>
+          {/* <Select defaultValue="recommended">
             <SelectTrigger className="w-[180px]">
               <SelectValue />
             </SelectTrigger>
@@ -58,7 +58,7 @@ const Blog01Page = (props: BlogsPageProps) => {
               <SelectItem value="latest">Latest</SelectItem>
               <SelectItem value="popular">Popular</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
         </div>
 
         <Suspense fallback={<div>Đang tải...</div>}>

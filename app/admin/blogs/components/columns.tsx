@@ -35,22 +35,22 @@ export const createColumns = ({
   currentSort,
   currentSortDirection,
 }: ColumnsProps): ColumnDef<Blog>[] => [
-  {
-    accessorKey: "id",
-    header: () => (
-      <SortableHeader
-        column="id"
-        currentSort={currentSort}
-        currentSortDirection={currentSortDirection}
-      >
-        ID
-      </SortableHeader>
-    ),
-    cell: ({ row }) => {
-      const blog = row.original;
-      return <div className="font-medium">{formatId(blog.id)}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: () => (
+  //     <SortableHeader
+  //       column="id"
+  //       currentSort={currentSort}
+  //       currentSortDirection={currentSortDirection}
+  //     >
+  //       ID
+  //     </SortableHeader>
+  //   ),
+  //   cell: ({ row }) => {
+  //     const blog = row.original;
+  //     return <div className="font-medium">{formatId(blog.id)}</div>;
+  //   },
+  // },
   {
     accessorKey: "title",
     header: () => (
@@ -68,19 +68,19 @@ export const createColumns = ({
       </div>
     ),
   },
-  {
-    accessorKey: "summary",
-    header: "Tóm Tắt",
-    cell: ({ row }) => (
-      <div className="max-w-[300px]">
-        {/* <div className="font-medium truncate">{row.getValue("title")}</div> */}
+  // {
+  //   accessorKey: "summary",
+  //   header: "Tóm Tắt",
+  //   cell: ({ row }) => (
+  //     <div className="max-w-[300px]">
+  //       {/* <div className="font-medium truncate">{row.getValue("title")}</div> */}
 
-        <div className="text-sm text-muted-foreground truncate mt-1">
-          {row.original.summary}
-        </div>
-      </div>
-    ),
-  },
+  //       <div className="text-sm text-muted-foreground truncate mt-1">
+  //         {row.original.summary}
+  //       </div>
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "slug",
     header: "Slug",
