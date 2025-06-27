@@ -17,7 +17,6 @@ import { SortableHeader } from "@/components/admin/data-table/sortable-header";
 import Link from "next/link";
 import DeleteDialog from "@/components/admin/delete-dialog";
 import { deleteBlog } from "@/actions/blog.action";
-import { formatId } from "@/lib/utils";
 
 interface ColumnsProps {
   currentSort?: string;
