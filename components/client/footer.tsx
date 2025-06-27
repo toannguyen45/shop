@@ -197,7 +197,7 @@ const Footer = () => {
           <span className="text-gray-400">
             &copy; {new Date().getFullYear()} {" "}
             <Link href="/" target="_blank" aria-label="Shadcn UI Blocks homepage" className="text-gray-200 hover:text-white">
-              Shadcn UI Blocks
+              <span className="focus-visible:ring-2 focus-visible:ring-white">Shadcn UI Blocks</span>
             </Link>
             . All rights reserved.
           </span>

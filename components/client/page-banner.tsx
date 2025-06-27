@@ -38,20 +38,18 @@ export default function PageBanner({
                   </BreadcrumbLink>
                 </UIBreadcrumbItem>
                 {breadcrumbs.map((item, index) => (
-                  <div key={index} className="flex items-center">
+                  <UIBreadcrumbItem key={index}>
                     <BreadcrumbSeparator>
                       <ChevronRight className="h-4 w-4" />
                     </BreadcrumbSeparator>
-                    <UIBreadcrumbItem>
-                      {item.href && index < breadcrumbs.length - 1 ? (
-                        <BreadcrumbLink asChild>
-                          <Link href={item.href}>{item.label}</Link>
-                        </BreadcrumbLink>
-                      ) : (
-                        <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                      )}
-                    </UIBreadcrumbItem>
-                  </div>
+                    {item.href && index < breadcrumbs.length - 1 ? (
+                      <BreadcrumbLink asChild>
+                        <Link href={item.href}>{item.label}</Link>
+                      </BreadcrumbLink>
+                    ) : (
+                      <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                    )}
+                  </UIBreadcrumbItem>
                 ))}
               </BreadcrumbList>
             </Breadcrumb>
