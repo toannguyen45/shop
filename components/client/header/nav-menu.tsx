@@ -12,27 +12,27 @@ export const NavMenu = (props: NavigationMenuProps) => (
     <NavigationMenuList className="gap-6 space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start">
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link className="font-medium" href="/">Trang Chủ</Link>
+          <Link className="font-medium uppercase" href="/">Trang Chủ</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link className="font-medium" href="/products">Sản Phẩm</Link>
+          <Link className="font-medium uppercase" href="/products">Sản Phẩm</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link className="font-medium" href="/blogs">Blog</Link>
+          <Link className="font-medium uppercase" href="/blogs">Blog</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link className="font-medium" href="/about">Về Chúng Tôi</Link>
+          <Link className="font-medium uppercase" href="/about">Về Chúng Tôi</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link className="font-medium" href="/contact">Liên Hệ</Link>
+          <Link className="font-medium uppercase" href="/contact">Liên Hệ</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
     </NavigationMenuList>

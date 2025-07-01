@@ -1,9 +1,11 @@
 "use client";
 
 import FilterCheckboxGroup from "./filters/filter-checkbox-group";
+import FilterPriceRange from "./filters/filter-price-range";
 import { useFilter } from "@/contexts/filter-context";
 import React from "react";
-import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { Filter } from "lucide-react";
 
 const FilterBar = () => {
   const { resetFilters } = useFilter();
@@ -19,34 +21,35 @@ const FilterBar = () => {
       ],
       key: "categories" as const,
     },
-    {
-      title: "Khoảng giá",
-      options: [
-        { label: "Dưới 500.000đ", value: "under-500k" },
-        { label: "500.000đ - 1.000.000đ", value: "500k-1m" },
-        { label: "1.000.000đ - 2.000.000đ", value: "1m-2m" },
-        { label: "Trên 2.000.000đ", value: "over-2m" },
-      ],
-      key: "priceRange" as const,
-    },
   ];
 
   return (
-    <div className="w-64 p-4 space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-medium">Lọc sản phẩm</h2>
-      </div>
+    <div className="w-64 space-y-6">
+      <Card className="w-full">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Filter className="h-4 w-4" />
+            <span className="font-semibold">Lọc Sản Phẩm</span>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {filterCategories.map((category) => (
+            <FilterCheckboxGroup
+              key={category.key}
+              title={category.title}
+              options={category.options}
+              filterKey={category.key}
+            />
+          ))}
+          
+          <FilterPriceRange
+            title="Khoảng giá"
+            filterKey="priceRange"
+          />
+        </CardContent>
+      </Card>
 
-      {filterCategories.map((category) => (
-        <FilterCheckboxGroup
-          key={category.key}
-          title={category.title}
-          options={category.options}
-          filterKey={category.key}
-        />
-      ))}
-
-      <Button onClick={resetFilters}>Xoá lọc</Button>
+      {/* <Button onClick={resetFilters}>Xoá lọc</Button> */}
     </div>
   );
 };

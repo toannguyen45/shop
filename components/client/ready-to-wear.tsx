@@ -34,14 +34,16 @@ const products = [
 
 const ReadyToWear = () => {
   return (
-    <section className="container mx-auto px-6 py-16">
+    <section className="max-w-screen-xl mx-auto py-20 px-4">
       <div className="flex justify-between items-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">READY-TO-WEAR</h2>
-        <Link 
-          href="/collections/ready-to-wear" 
+        <h2 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-regular text-left">
+          Sản phẩm nổi bật
+        </h2>
+        <Link
+          href="/collections/ready-to-wear"
           className="flex items-center space-x-2 text-sm hover:text-gray-600"
         >
-          <span>See more</span>
+          <span>Xem thêm</span>
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -49,7 +51,10 @@ const ReadyToWear = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <div key={product.id} className="space-y-4">
-            <Link href={`/products/${product.id}`} className="block aspect-[3/4] relative bg-gray-100">
+            <Link
+              href={`/products/${product.id}`}
+              className="block aspect-[3/4] relative bg-gray-100"
+            >
               <Image
                 src={product.image}
                 alt={product.name}

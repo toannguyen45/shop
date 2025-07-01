@@ -5,7 +5,7 @@ import React from "react";
 
 const SortBy = () => {
   const { optimisticFilters, updateFilters } = useFilter();
-  
+
   const sortOptions = [
     { label: "Featured", value: "featured" },
     { label: "Giá: Thấp tới Cao", value: "lowest" },
@@ -16,8 +16,8 @@ const SortBy = () => {
 
   return (
     <div className="flex items-center space-x-2">
-      <label htmlFor="sort" className="text-sm text-gray-600">
-        Sort by:
+      <label htmlFor="sort" className="text-sm">
+        Sắp xếp:
       </label>
       <select
         id="sort"
@@ -35,4 +35,4 @@ const SortBy = () => {
   );
 };
 
-export default SortBy; 
+export default SortBy;

@@ -5,6 +5,7 @@ import SortBy from "@/components/custom/sort-by";
 import { FilterProvider } from "@/contexts/filter-context";
 import React from "react";
 import { Suspense } from "react";
+import Loading from "./loading";
 
 const Products = async ({
   searchParams,
@@ -46,14 +47,14 @@ const Products = async ({
             <div className="flex-1">
               {/* Sort By and Results Count */}
               <div className="flex justify-between items-center mb-6">
-                <p className="text-sm text-gray-600">
-                  {/* Hiển thị {products.pagination.totalPages} kết quả */}
+                <p className="text-sm font-bold">
+                  TẤT CẢ SẢN PHẨM
                 </p>
                 <SortBy />
               </div>
 
               {/* Products Grid */}
-              <Suspense fallback={<p>Đang tải...</p>}>
+              <Suspense fallback={<Loading />}>
                 <ProductList params={formattedParams} />
               </Suspense>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { toast } from "sonner";
@@ -15,13 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Product, ProductFormData } from "@/types/product";
@@ -29,6 +23,11 @@ import { useRouter } from "next/navigation";
 import { insertProductSchema } from "@/schemaValidations/product.schema";
 import { productDefaultValues } from "@/constants";
 import { createProduct, updateProduct } from "@/actions/product.action";
+import { useState } from "react";
+import slugify from "slugify";
+import Image from "next/image";
+import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
+import { Loader2, Upload, X } from "lucide-react";
 
 export default function MyForm({
   type,
@@ -41,11 +40,70 @@ export default function MyForm({
 }) {
   const router = useRouter();
 
+  const [uploadingImages, setUploadingImages] = useState(false);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    form.setValue("name", name, { shouldValidate: true });
+    if (!product) {
+      const slug = slugify(name, { lower: true, strict: true });
+      form.setValue("slug", slug, { shouldValidate: true });
+    }
+  };
+
   const form = useForm<ProductFormData>({
     resolver: zodResolver(insertProductSchema),
     defaultValues:
       product && type === "Update" ? product : productDefaultValues,
   });
+
+  // Handle multiple image uploads
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingImages(true);
+    const currentImages = form.getValues("images");
+
+    try {
+      const uploadPromises = Array.from(files).map((file) =>
+        uploadToCloudinary(file)
+      );
+      const uploadedUrls = await Promise.all(uploadPromises);
+
+      form.setValue("images", [...currentImages, ...uploadedUrls]);
+      toast.success("Image uploaded successfully");
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setUploadingImages(false);
+      // Reset file input
+      event.target.value = "";
+    }
+  };
+
+  // Remove image
+  const removeImage = async (index: number) => {
+    const currentImages = form.getValues("images");
+    if (!currentImages || !currentImages[index]) return;
+
+    const imageToDelete = currentImages[index];
+
+    try {
+      const deleted = await deleteFromCloudinary(imageToDelete);
+      if (deleted) {
+        const updatedImages = currentImages.filter((_, i) => i !== index);
+        form.setValue("images", updatedImages);
+        toast.success("Image deleted successfully");
+      } else {
+        toast.error("Failed to delete image from storage");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
     values
@@ -103,7 +161,15 @@ export default function MyForm({
             <FormItem>
               <FormLabel>Tiêu đề</FormLabel>
               <FormControl>
-                <Input placeholder="Nhập tiêu đề..." type="" {...field} />
+                <Input
+                  placeholder="Nhập tiêu đề..."
+                  type=""
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleNameChange(e);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -129,19 +195,10 @@ export default function MyForm({
           name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Danh mục</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="electronic">Đồ Điện</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormLabel>Danh Mục</FormLabel>
+              <FormControl>
+                <Input placeholder="Nhập danh mục..." type="" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -153,18 +210,81 @@ export default function MyForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Hãng</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Input placeholder="Nhập hãng..." type="" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="images"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Images</FormLabel>
+              <FormControl>
+                <div className="space-y-4">
+                  {/* Upload Button */}
+                  <div className="flex items-center gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={uploadingImages}
+                      onClick={() =>
+                        document.getElementById("image-upload")?.click()
+                      }
+                    >
+                      {uploadingImages ? (
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      ) : (
+                        <Upload className="h-4 w-4 mr-2" />
+                      )}
+                      {uploadingImages ? "Uploading..." : "Upload Images"}
+                    </Button>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+
+                  {/* Image Preview Grid */}
+                  {field.value.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {field.value.map((imageUrl, index) => (
+                        <div key={index} className="relative group">
+                          <div className="aspect-square relative rounded-lg overflow-hidden border">
+                            <Image
+                              src={imageUrl || "/placeholder.svg"}
+                              alt={`Product image ${index + 1}`}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute -top-2 -right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={() => removeImage(index)}
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </FormControl>
+              <FormDescription>
+                Upload multiple images for your product. First image will be the
+                main image.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

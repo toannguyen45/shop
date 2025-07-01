@@ -1,5 +1,8 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { useFilter } from "@/contexts/filter-context";
 import React from "react";
 
@@ -26,28 +29,30 @@ const FilterCheckboxGroup = ({
   };
 
   return (
-    <div className="space-y-3">
-      <h3 className="font-medium text-lg">{title}</h3>
-      <div className="space-y-2">
-        {options.map((option) => (
-          <div key={option.value} className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id={`${filterKey}-${option.value}`}
-              checked={selectedValues.includes(option.value)}
-              onChange={() => handleChange(option.value)}
-              className="rounded border-gray-300"
-            />
-            <label
-              htmlFor={`${filterKey}-${option}`}
-              className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer"
-            >
-              {option.label}
-            </label>
-          </div>
-        ))}
+    <>
+      <div className="flex flex-col space-y-4">
+        <Label className="text-sm font-bold uppercase">{title}</Label>
+
+        <div className="flex flex-col space-y-2">
+          {options.map((option) => (
+            <div key={option.value} className="flex items-center space-x-2">
+              <Checkbox
+                id={`${filterKey}-${option.value}`}
+                checked={selectedValues.includes(option.value)}
+                onCheckedChange={() => handleChange(option.value)}
+              />
+              <Label
+                htmlFor={`${filterKey}-${option.value}`}
+                className="text-sm font-normal"
+              >
+                {option.label}
+              </Label>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      <Separator className="my-4" />
+    </>
   );
 };
 

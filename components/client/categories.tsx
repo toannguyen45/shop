@@ -1,4 +1,3 @@
-// components/custom/Categories.tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,7 +24,7 @@ const categoryItems = [
 
 const Categories = () => {
   return (
-    <section className="container mx-auto px-6 py-16">
+    <section className="max-w-screen-xl mx-auto py-20 px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categoryItems.map((item) => (
           <div

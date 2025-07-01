@@ -9,21 +9,25 @@ export async function uploadToCloudinary(file: File): Promise<string> {
     "upload_preset",
     process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!
   );
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-    {
-      method: "POST",
-      body: formData,
+    if (!response.ok) {
+      throw new Error("Failed to upload image");
     }
-  );
 
-  if (!response.ok) {
-    throw new Error("Failed to upload image");
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error("Error uploading to Cloudinary:", error);
+    throw error;
   }
-
-  const data = await response.json();
-  return data.secure_url;
 }
 
 export async function deleteFromCloudinary(imageUrl: string): Promise<boolean> {
