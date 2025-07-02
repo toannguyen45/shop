@@ -2,13 +2,13 @@
 
 import FilterCheckboxGroup from "./filters/filter-checkbox-group";
 import FilterPriceRange from "./filters/filter-price-range";
-import { useFilter } from "@/contexts/filter-context";
+// import { useFilter } from "@/contexts/filter-context";
 import React from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Filter } from "lucide-react";
 
 const FilterBar = () => {
-  const { resetFilters } = useFilter();
+  // const { resetFilters } = useFilter();
 
   const filterCategories = [
     {

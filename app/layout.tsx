@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import {
-  Inter,
+  // Inter,
   Montserrat,
-  Nunito,
+  // Nunito,
 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/custom/theme-provider";

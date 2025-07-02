@@ -1,5 +1,5 @@
 import Hero from "@/components/client/hero";
-import Carousel from "@/components/client/carousel";
+// import Carousel from "@/components/client/carousel";
 import Categories from "@/components/client/categories";
 import ContactForm from "@/components/client/contact-form";
 import ReadyToWear from "@/components/client/ready-to-wear";
