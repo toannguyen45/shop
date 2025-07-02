@@ -28,7 +28,7 @@ const ProductList = async ({ params }: { params: TParamsGetProducts }) => {
       {products.data.map((product) => (
         <div key={product.id} className="space-y-4">
           <Link
-            href={`/products/${product.id}`}
+            href={`/products/${product.slug}`}
             className="block aspect-[3/4] relative bg-gray-100"
           >
             <Image
