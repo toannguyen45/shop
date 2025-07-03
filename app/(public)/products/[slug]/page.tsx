@@ -7,10 +7,26 @@ import { notFound } from "next/navigation";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
+import prisma from "@/db/prisma";
 
-const ProductDetail = async (props: { params: Promise<{ slug: string }> }) => {
-  const { slug } = await props.params;
+interface ProductDetailPageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
 
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    select: { slug: true },
+  });
+
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
+}
+
+const ProductDetail = async ({ params }: ProductDetailPageProps) => {
+  const { slug } = await params;
   const product = await getProductBySlug(slug);
 
   if (!product) notFound();
@@ -64,10 +80,6 @@ const ProductDetail = async (props: { params: Promise<{ slug: string }> }) => {
                 </Button>
               </div>
             </div>
-
-            {/* <form action={addProducttoShoppingCart}>
-            <ShoppingBagButton />
-          </form> */}
           </div>
         </div>
 

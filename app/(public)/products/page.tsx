@@ -47,16 +47,16 @@ const Products = async ({
             <div className="flex-1">
               {/* Sort By and Results Count */}
               <div className="flex justify-between items-center mb-6">
-                <p className="text-sm font-bold">
-                  TẤT CẢ SẢN PHẨM
-                </p>
+                <p className="text-sm font-bold">TẤT CẢ SẢN PHẨM</p>
                 <SortBy />
               </div>
 
-              {/* Products Grid */}
-              <Suspense fallback={<Loading />}>
-                <ProductList params={formattedParams} />
-              </Suspense>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Products Grid */}
+                <Suspense fallback={<Loading />}>
+                  <ProductList params={formattedParams} />
+                </Suspense>
+              </div>
             </div>
           </div>
         </section>
