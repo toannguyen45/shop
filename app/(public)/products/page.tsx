@@ -1,11 +1,11 @@
 import PageBanner from "@/components/client/page-banner";
+import ProductLoading from "@/components/client/product-loading";
 import FilterBar from "@/components/custom/filter-bar";
 import ProductList from "@/components/custom/product-list";
 import SortBy from "@/components/custom/sort-by";
 import { FilterProvider } from "@/contexts/filter-context";
 import React from "react";
 import { Suspense } from "react";
-import Loading from "./loading";
 
 const Products = async ({
   searchParams,
@@ -53,7 +53,7 @@ const Products = async ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Products Grid */}
-                <Suspense fallback={<Loading />}>
+                <Suspense fallback={<ProductLoading />}>
                   <ProductList params={formattedParams} />
                 </Suspense>
               </div>
