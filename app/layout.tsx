@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 const montserrat = Montserrat({
   variable: "--font-montserrat-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export default function RootLayout({
