@@ -22,7 +22,7 @@ const products = [
     id: 3,
     name: "WOMEN'S MINIMAL HOURGLASS JACKET IN BLACK",
     price: 2800,
-    image: "/imgs/products/product3.jfif",
+    image: "/imgs/products/product2.webp",
   },
   {
     id: 4,
