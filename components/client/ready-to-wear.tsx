@@ -1,36 +1,41 @@
-// components/custom/ReadyToWear.tsx
-"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getFeaturedProducts } from "@/actions/product.action";
+import { formatCurrency } from "@/lib/utils";
 
-const products = [
-  {
-    id: 1,
-    name: "WOMEN'S SWING TWISTED SHIRT IN WHITE",
-    price: 550,
-    image: "/imgs/products/product1.jpg",
-  },
-  {
-    id: 2,
-    name: "CARGO JACKET IN BLACK",
-    price: 1900,
-    image: "/imgs/products/product2.webp",
-  },
-  {
-    id: 3,
-    name: "WOMEN'S MINIMAL HOURGLASS JACKET IN BLACK",
-    price: 2800,
-    image: "/imgs/products/product2.webp",
-  },
-  {
-    id: 4,
-    name: "WOMEN'S FITTED DRESS IN BLACK",
-    price: 1400,
-    image: "/imgs/products/product4.jpg",
-  },
-];
+// Tạo async component để lấy data
+async function FeaturedProducts() {
+  const products = await getFeaturedProducts();
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {products.map((product) => (
+        <div key={product.id} className="space-y-4">
+          <Link
+            href={`/products/${product.slug}`}
+            className="block aspect-[3/4] relative bg-gray-100"
+          >
+            <Image
+              src={product.images[0] || "/imgs/products/placeholder.jpg"}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover hover:opacity-90 transition-opacity"
+            />
+          </Link>
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium line-clamp-2">{product.name}</h3>
+            <p className="text-sm font-semibold">
+              {formatCurrency(product.price)}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 const ReadyToWear = () => {
   return (
@@ -48,27 +53,23 @@ const ReadyToWear = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <div key={product.id} className="space-y-4">
-            <Link
-              href={`/products/${product.id}`}
-              className="block aspect-[3/4] relative bg-gray-100"
-            >
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                className="object-cover hover:opacity-90 transition-opacity"
-              />
-            </Link>
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">{product.name}</h3>
-              <p className="text-sm">${product.price}</p>
-            </div>
+      <React.Suspense
+        fallback={
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="space-y-4">
+                <div className="aspect-[3/4] bg-gray-200 animate-pulse" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        }
+      >
+        <FeaturedProducts />
+      </React.Suspense>
     </section>
   );
 };
