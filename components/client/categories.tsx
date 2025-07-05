@@ -6,19 +6,19 @@ const categoryItems = [
     id: 1,
     title: "WOMEN",
     image: "/imgs/categories/women.webp",
-    href: "/categories/women",
+    href: "/products",
   },
   {
     id: 2,
     title: "MEN",
     image: "/imgs/categories/men.webp",
-    href: "/categories/men",
+    href: "/products",
   },
   {
     id: 3,
     title: "ACCESSORIES",
     image: "/imgs/categories/accessories.webp",
-    href: "/categories/accessories",
+    href: "/products",
   },
 ];
 
