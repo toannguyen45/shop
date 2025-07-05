@@ -21,9 +21,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <Image
               src={product.images[0] || "/placeholder.svg"}
               alt={product.name}
-              width={300}
-              height={300}
-              className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+              width={400}
+              height={256}
+              quality={60}
+              className="h-60 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {product.isFeatured && (
               <Badge className="absolute top-3 right-3 bg-orange-500 hover:bg-orange-600">

@@ -223,7 +223,7 @@ export default function MyForm({
           name="images"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product Images</FormLabel>
+              <FormLabel>Ảnh sản phẩm</FormLabel>
               <FormControl>
                 <div className="space-y-4">
                   {/* Upload Button */}
@@ -241,7 +241,7 @@ export default function MyForm({
                       ) : (
                         <Upload className="h-4 w-4 mr-2" />
                       )}
-                      {uploadingImages ? "Uploading..." : "Upload Images"}
+                      {uploadingImages ? "Đang tải..." : "Tải ảnh lên"}
                     </Button>
                     <input
                       id="image-upload"
@@ -282,8 +282,8 @@ export default function MyForm({
                 </div>
               </FormControl>
               <FormDescription>
-                Upload multiple images for your product. First image will be the
-                main image.
+                Tải lên nhiều hình ảnh cho sản phẩm của bạn. Hình ảnh đầu tiên
+                sẽ là hình ảnh chính.
               </FormDescription>
               <FormMessage />
             </FormItem>
