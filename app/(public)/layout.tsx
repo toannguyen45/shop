@@ -1,5 +1,14 @@
 import Footer from "@/components/client/footer";
 import Header from "@/components/client/header/header";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Trang chủ MiTo3D",
+  description: "Chào mừng các bạn đến với MiTo3D",
+  openGraph: {
+    type: "website",
+  },
+};
 
 export default function RootLayout({
   children,

@@ -5,7 +5,7 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 bg-emerald-800">
+    <div className="min-h-screen flex items-center justify-center px-6 bg-slate-400">
       <div className="text-center max-w-2xl">
         <Badge className="bg-gradient-to-br via-70% from-primary via-muted/30 to-primary rounded-full py-1 border-none">
           Just released v1.0.0
