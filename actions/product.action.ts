@@ -6,7 +6,7 @@ import {
   updateProductSchema,
 } from "@/schemaValidations/product.schema";
 import prisma from "@/db/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_cache } from "next/cache";
 import { convertToPlainObject, formatError } from "@/lib/utils";
 import { PAGE_SIZE, PRICE_RANGES } from "@/constants";
 import { Prisma } from "@prisma/client";
@@ -182,6 +182,13 @@ export async function getAllProducts({
     },
   };
 }
+
+export const getAllProductsCached = unstable_cache(
+  getAllProducts,
+  ["products"], // cache key prefix
+  { revalidate: 60 * 60 * 2 } // revalidate two hours
+);
+
 
 // Delete a product
 export async function deleteProduct(id: string) {
