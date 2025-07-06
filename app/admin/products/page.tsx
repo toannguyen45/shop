@@ -2,7 +2,7 @@ import PageHeader from "@/components/admin/page-header";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { getAllProducts } from "@/actions/product.action";
+import { getAllProductsCached } from "@/actions/product.action";
 import { ProductTable } from "./components/product-table";
 
 interface ProductsPageProps {
@@ -30,7 +30,7 @@ async function ProductsContent({ searchParams }: ProductsPageProps) {
   const isFeatured =
     filter === "true" ? true : filter === "false" ? false : undefined;
 
-  const products = await getAllProducts({
+  const productsPromise = await getAllProductsCached({
     query: searchText,
     page,
     sort,
@@ -38,6 +38,8 @@ async function ProductsContent({ searchParams }: ProductsPageProps) {
     isFeatured,
     limit,
   });
+
+  const [products] = await Promise.all([productsPromise]);
 
   // Filter options for isFeatured
   const filterOptions = [
