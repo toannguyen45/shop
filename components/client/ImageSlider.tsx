@@ -37,7 +37,8 @@ export function ImageSlider({ images }: iAppProps) {
           height={600}
           src={images[mainImageIndex]}
           alt="Product image"
-          className="object-cover w-[600px] h-[600px]"
+          priority={true}
+          // className="object-contain"
         />
 
         <div className="absolute inset-0 flex items-center justify-between px-4">
@@ -67,7 +68,8 @@ export function ImageSlider({ images }: iAppProps) {
               alt="Product Image"
               width={100}
               height={100}
-              className="object-cover w-[100px] h-[100px]"
+              quality={60}
+              // className="object-contain"
             />
           </div>
         ))}
