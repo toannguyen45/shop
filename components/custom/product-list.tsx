@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllProducts } from "@/actions/product.action";
+import { getAllProductsCached } from "@/actions/product.action";
 import ProductCard from "../client/product-card";
 
 type TParamsGetProducts = {
@@ -11,7 +11,7 @@ type TParamsGetProducts = {
 };
 
 const ProductList = async ({ params }: { params: TParamsGetProducts }) => {
-  const products = await getAllProducts({
+  const products = await getAllProductsCached({
     query: params.q,
     limit: 10,
     page: Number(params.page),
