@@ -66,7 +66,7 @@ const Carousel = () => {
             alt={slides[0].title}
             fill
             className="object-cover"
-            priority
+            priority={true}
             quality={80}
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
           />

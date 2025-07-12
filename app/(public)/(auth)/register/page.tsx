@@ -1,10 +1,10 @@
 import React from "react";
-import LoginForm from "./login-form";
+import LoginForm from "../login/login-form";
 
 const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <LoginForm type="Login" />
+      <LoginForm type="Register" />
     </div>
   );
 };

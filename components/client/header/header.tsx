@@ -1,11 +1,9 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { Button } from "../../ui/button";
 import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
+import AuthServer from "./auth-server";
 
 const Header = () => {
   return (
@@ -46,10 +44,7 @@ const Header = () => {
           {/* Desktop Menu */}
           <NavMenu className="hidden md:block" />
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="hidden sm:inline-flex">
-              Đăng Nhập
-            </Button>
-            <Button>Giỏ Hàng</Button>
+            <AuthServer />
             {/* Mobile Menu */}
             <div className="md:hidden">
               <NavigationSheet />
