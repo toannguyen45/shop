@@ -116,7 +116,7 @@ export async function deleteSession(): Promise<void> {
   // Delete from database
   if (currentSession) {
     try {
-      await prisma.session.delete({
+      await prisma.session.deleteMany({
         where: { sessionToken: currentSession.sessionToken },
       });
     } catch (error) {
@@ -148,7 +148,6 @@ export async function getSessionWithUser() {
 
     if (!dbSession || dbSession.expires < new Date()) {
       // Session expired or not found, delete it
-      await deleteSession();
       return null;
     }
 

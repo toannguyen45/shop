@@ -29,32 +29,34 @@ export default function LoginForm({ type }: { type: "Login" | "Register" }) {
       password: "",
     },
   });
-  const onSubmit: SubmitHandler<z.infer<typeof LoginSchema>> = async (
-    values
-  ) => {
+  const onSubmit: SubmitHandler<z.infer<typeof LoginSchema>> = async (values) => {
     try {
       if (type === "Login") {
         const res = await login(values);
 
         if (!res.success) {
-          toast.success(res.message);
-        } else {
           toast.error(res.message);
+          return;
+        } else {
+          toast.success(res.message);
           router.refresh();
+          router.push("/");
+          return;
         }
       }
       if (type === "Register") {
         const res = await register(values);
 
         if (!res.success) {
-          toast.success(res.message);
-        } else {
           toast.error(res.message);
+          return;
+        } else {
+          toast.success(res.message);
           router.refresh();
+          router.push("/");
+          return;
         }
       }
-
-      router.push("/");
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -119,8 +121,8 @@ export default function LoginForm({ type }: { type: "Login" | "Register" }) {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
-                Đăng nhập
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "Đang xử lý..." : "Đăng nhập"}
               </Button>
               <Button variant="outline" className="w-full" type="button">
                 Đăng nhập bằng Google
