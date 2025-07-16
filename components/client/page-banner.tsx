@@ -19,8 +19,8 @@ export default function PageBanner({
   breadcrumbs = [],
 }: PageBannerProps) {
   return (
-    <div className="w-full bg-muted/30 border-b">
-      <div className="container mx-auto px-4 py-8 md:py-12">
+    <div className="w-full bg-muted/30 border-b mb-5">
+      <div className="container mx-auto py-8 md:py-12">
         <div className="flex flex-col items-center justify-center text-center space-y-4">
           {/* Page Title */}
           <h1 className="text-3xl font-bold tracking-tight">{title}</h1>

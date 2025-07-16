@@ -46,7 +46,7 @@ const Blog01Page = (props: BlogsPageProps) => {
     <>
       <PageBanner title="Tin Tức" breadcrumbs={breadcrumbs} />
 
-      <div className="max-w-screen-xl mx-auto py-4 px-4">
+      <div className="max-w-screen-xl mx-auto py-10 px-4">
         <div className="flex items-end justify-between">
           <h2 className="text-3xl font-bold tracking-tight">Tin Tức</h2>
           {/* <Select defaultValue="recommended">

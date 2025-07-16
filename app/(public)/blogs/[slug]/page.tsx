@@ -104,7 +104,7 @@ const page = async ({ params }: BlogDetailPageProps) => {
       <ReadingProgress />
       <PageBanner title="Tin Tức" breadcrumbs={breadcrumbs} />
 
-      <div className="max-w-screen-xl mx-auto py-8 px-4 flex flex-col lg:flex-row gap-8">
+      <div className="max-w-screen-xl mx-auto py-10 px-4 flex flex-col lg:flex-row gap-8">
         {/* Main content */}
         <div className="flex-1 min-w-0">
           <h1 className="text-3xl font-bold mb-2">{blog.title}</h1>

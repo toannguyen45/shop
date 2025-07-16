@@ -39,7 +39,7 @@ const ProductDetail = async ({ params }: ProductDetailPageProps) => {
   return (
     <>
       <PageBanner title={product.name} breadcrumbs={breadcrumbs} />
-      <section className="max-w-screen-xl mx-auto py-4 px-4">
+      <section className="max-w-screen-xl mx-auto py-10 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start lg:gap-x-24 py-6">
           <ImageSlider images={product.images} />
           <div className="flex flex-col gap-3">

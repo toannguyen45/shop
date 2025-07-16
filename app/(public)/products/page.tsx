@@ -36,7 +36,7 @@ const Products = async ({
       <PageBanner title="Sản Phẩm" breadcrumbs={breadcrumbs} />
 
       <FilterProvider>
-        <section className="max-w-screen-xl mx-auto py-4 px-4">
+        <section className="max-w-screen-xl mx-auto py-10 px-4">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filter Bar - Left Side */}
             <div className="w-full lg:w-64 flex-shrink-0">

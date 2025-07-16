@@ -12,7 +12,7 @@ const page = async () => {
         title="Trang khách hàng"
         breadcrumbs={[{ label: "Trang khách hàng" }]}
       />
-      <section className="max-w-screen-xl mx-auto py-4 px-4">
+      <section className="max-w-screen-xl mx-auto py-10 px-4">
         {/* Tiêu đề ngang hàng */}
         <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] gap-6 items-center mb-2">
           <h2 className="text-lg font-semibold">TRANG TÀI KHOẢN</h2>
