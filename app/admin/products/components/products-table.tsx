@@ -22,7 +22,7 @@ interface ProductTableProps {
   filterOptions: Array<{ label: string; value: string }>;
 }
 
-export function ProductTable({
+export function ProductsTable({
   data,
   pagination,
   currentSort,

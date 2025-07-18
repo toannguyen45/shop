@@ -1,5 +1,4 @@
 import React from "react";
-// import ProductForm from "../components/product-form";
 import {
   Card,
   CardContent,
@@ -19,7 +18,6 @@ const CreateProduct = () => {
           <CardTitle className="mb-2">Thông Tin</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* <ProductForm type='Create' /> */}
           <MyForm type='Create'/>
         </CardContent>
       </Card>

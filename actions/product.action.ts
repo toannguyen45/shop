@@ -10,6 +10,7 @@ import { revalidatePath, unstable_cache } from "next/cache";
 import { convertToPlainObject, formatError } from "@/lib/utils";
 import { PAGE_SIZE, PRICE_RANGES } from "@/constants";
 import { Prisma } from "@prisma/client";
+import { deleteFromCloudinary } from "@/lib/cloudinary";
 
 // Create a product
 export async function createProduct(data: z.infer<typeof insertProductSchema>) {
@@ -18,6 +19,7 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
     await prisma.product.create({ data: product });
 
     revalidatePath("/admin/products");
+    revalidatePath("/products");
 
     return {
       success: true,
@@ -44,6 +46,7 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
     });
 
     revalidatePath("/admin/products");
+    revalidatePath("/products");
 
     return {
       success: true,
@@ -189,7 +192,6 @@ export const getAllProductsCached = unstable_cache(
   { revalidate: 60 * 60 * 2 } // revalidate two hours
 );
 
-
 // Delete a product
 export async function deleteProduct(id: string) {
   try {
@@ -199,9 +201,20 @@ export async function deleteProduct(id: string) {
 
     if (!productExists) throw new Error("Product not found");
 
+    if (Array.isArray(productExists.images)) {
+      for (const url of productExists.images) {
+        try {
+          await deleteFromCloudinary(url);
+        } catch (e) {
+          console.error("Failed to delete image from Cloudinary:", url, e);
+        }
+      }
+    }
+
     await prisma.product.delete({ where: { id } });
 
     revalidatePath("/admin/products");
+    revalidatePath("/products");
 
     return {
       success: true,

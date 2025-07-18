@@ -1,5 +1,4 @@
 import React from "react";
-// import ProductForm from "../components/product-form";
 import {
     Card,
     CardContent,
@@ -31,7 +30,6 @@ const UpdateProduct = async (props: {
                     <CardTitle className="mb-2">Thông Tin</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {/* <ProductForm type='Update' product={product} productId={product.id} /> */}
                     <MyForm type='Update' product={product} productId={product.id} />
                 </CardContent>
             </Card>

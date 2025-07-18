@@ -85,24 +85,10 @@ export default function MyForm({
   };
 
   // Remove image
-  const removeImage = async (index: number) => {
+  const removeImage = (index: number) => {
     const currentImages = form.getValues("images");
-    if (!currentImages || !currentImages[index]) return;
-
-    const imageToDelete = currentImages[index];
-
-    try {
-      const deleted = await deleteFromCloudinary(imageToDelete);
-      if (deleted) {
-        const updatedImages = currentImages.filter((_, i) => i !== index);
-        form.setValue("images", updatedImages);
-        toast.success("Image deleted successfully");
-      } else {
-        toast.error("Failed to delete image from storage");
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    const updatedImages = currentImages.filter((_, i) => i !== index);
+    form.setValue("images", updatedImages);
   };
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
@@ -128,6 +114,14 @@ export default function MyForm({
           return;
         }
 
+        if (product) {
+          const oldImages = product.images || [];
+          const newImages = values.images || [];
+          const imagesToDelete = oldImages.filter(img => !newImages.includes(img));
+
+          await Promise.all(imagesToDelete.map(url => deleteFromCloudinary(url)));
+        }
+
         const res = await updateProduct({ ...values, id: productId });
 
         if (!res.success) {
@@ -142,10 +136,6 @@ export default function MyForm({
       toast.error("Failed to submit the form. Please try again.");
     }
   };
-
-  // const images = form.watch("images");
-  // const isFeatured = form.watch("isFeatured");
-  // const banner = form.watch("banner");
 
   return (
     <Form {...form}>

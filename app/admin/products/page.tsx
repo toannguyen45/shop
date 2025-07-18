@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { getAllProductsCached } from "@/actions/product.action";
-import { ProductTable } from "./components/product-table";
+import { ProductsTable } from "./components/products-table";
+import ProductsProvider from "./context/product-context";
+import ProductsDialogs from "./components/products-dialogs";
 
 interface ProductsPageProps {
   searchParams: Promise<{
@@ -48,7 +50,7 @@ async function ProductsContent({ searchParams }: ProductsPageProps) {
   ];
 
   return (
-    <ProductTable
+    <ProductsTable
       data={products.data}
       pagination={products.pagination}
       currentSort={sort}
@@ -60,17 +62,21 @@ async function ProductsContent({ searchParams }: ProductsPageProps) {
 
 const ProductList = (props: ProductsPageProps) => {
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex justify-between">
-        <PageHeader>Sản Phẩm</PageHeader>
-        <Button asChild variant="default">
-          <Link href="/admin/products/create">Thêm Sản Phẩm +</Link>
-        </Button>
+    <ProductsProvider>
+      <div className="flex flex-col gap-5">
+        <div className="flex justify-between">
+          <PageHeader>Sản Phẩm</PageHeader>
+          <Button asChild variant="default">
+            <Link href="/admin/products/create">Thêm Sản Phẩm +</Link>
+          </Button>
+        </div>
+        <Suspense fallback={<div>Đang tải...</div>}>
+          <ProductsContent searchParams={props.searchParams} />
+        </Suspense>
       </div>
-      <Suspense fallback={<div>Đang tải...</div>}>
-        <ProductsContent searchParams={props.searchParams} />
-      </Suspense>
-    </div>
+
+      <ProductsDialogs />
+    </ProductsProvider>
   );
 };
 
