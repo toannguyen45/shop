@@ -3,16 +3,28 @@ import Link from "next/link";
 import { Button } from "../../ui/button";
 import { User, ShoppingCart, LogOut } from "lucide-react";
 import { getSessionWithUser } from "@/lib/session";
+import { getMyCart } from "@/actions/cart.actions";
 import { logout } from "@/actions/auth.action";
+import { Badge } from "@/components/ui/badge";
 
 const AuthServer = async () => {
   const sessionWithUser = await getSessionWithUser();
+  const cart = await getMyCart();
+  const cartCount = cart?.items?.reduce((sum, item) => sum + item.qty, 0) || 0;
 
   return (
     <div className="flex items-center gap-3">
       <Link href="/cart" passHref>
         <Button variant="ghost" size="sm" className="relative">
           <ShoppingCart className="h-5 w-5" />
+          {cartCount > 0 && (
+            <Badge
+              className="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs rounded-full"
+              variant="secondary"
+            >
+              {cartCount}
+            </Badge>
+          )}
         </Button>
       </Link>
 

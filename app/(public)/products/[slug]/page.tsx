@@ -6,8 +6,8 @@ import { formatCurrency } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
 import prisma from "@/db/prisma";
+import AddToCart from "@/components/client/add-to-cart";
 
 interface ProductDetailPageProps {
   params: Promise<{
@@ -71,10 +71,7 @@ const ProductDetail = async ({ params }: ProductDetailPageProps) => {
                 MUA NGAY
               </Button>
               <div className="flex gap-3">
-                <Button variant="outline" className="flex-1 !p-6">
-                  <ShoppingBag />
-                  THÊM VÀO GIỎ HÀNG
-                </Button>
+                <AddToCart product={product} />
                 <Button variant="outline" className="flex-1 !p-6">
                   LIÊN HỆ
                 </Button>

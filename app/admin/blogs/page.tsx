@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { Suspense } from "react";
 import { getAllBlogsCached } from "@/actions/blog.action";
 import { BlogTable } from "@/app/admin/blogs/components/blog-table";
+import BlogsProvider from "./context/blog-context";
 
 interface BlogsPageProps {
   searchParams: Promise<{
@@ -60,17 +61,19 @@ async function BlogsContent({ searchParams }: BlogsPageProps) {
 
 const BlogList = (props: BlogsPageProps) => {
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex justify-between">
-        <PageHeader>Tin Tức</PageHeader>
-        <Button asChild variant="default">
-          <Link href="/admin/blogs/create">Thêm Tin Tức +</Link>
-        </Button>
+    <BlogsProvider>
+      <div className="flex flex-col gap-5">
+        <div className="flex justify-between">
+          <PageHeader>Tin Tức</PageHeader>
+          <Button asChild variant="default">
+            <Link href="/admin/blogs/create">Thêm Tin Tức +</Link>
+          </Button>
+        </div>
+        <Suspense fallback={<div>Đang tải...</div>}>
+          <BlogsContent searchParams={props.searchParams} />
+        </Suspense>
       </div>
-      <Suspense fallback={<div>Đang tải...</div>}>
-        <BlogsContent searchParams={props.searchParams} />
-      </Suspense>
-    </div>
+    </BlogsProvider>
   );
 };
 

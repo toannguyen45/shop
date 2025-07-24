@@ -1,22 +1,10 @@
 "use client";
-import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import type { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Blog } from "@/types/blog";
 import { SortableHeader } from "@/components/admin/data-table/sortable-header";
-import Link from "next/link";
-import DeleteDialog from "@/components/admin/delete-dialog";
-import { deleteBlog } from "@/actions/blog.action";
+import BlogsActionCell from "./blogs-action-cell";
 
 interface ColumnsProps {
   currentSort?: string;
@@ -34,22 +22,6 @@ export const createColumns = ({
   currentSort,
   currentSortDirection,
 }: ColumnsProps): ColumnDef<Blog>[] => [
-  // {
-  //   accessorKey: "id",
-  //   header: () => (
-  //     <SortableHeader
-  //       column="id"
-  //       currentSort={currentSort}
-  //       currentSortDirection={currentSortDirection}
-  //     >
-  //       ID
-  //     </SortableHeader>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const blog = row.original;
-  //     return <div className="font-medium">{formatId(blog.id)}</div>;
-  //   },
-  // },
   {
     accessorKey: "title",
     header: () => (
@@ -149,35 +121,6 @@ export const createColumns = ({
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const blog = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Thao Tác</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(blog.id)}
-            >
-             Sao chép ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href={`/admin/blogs/${blog.id}`}>Sửa blog</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600">
-              <DeleteDialog id={blog.id} action={deleteBlog} />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: BlogsActionCell,
   },
 ];
