@@ -2,7 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import { getSessionWithUser } from "./session";
+import { getSessionWithUser } from "./session-db";
 
 // Cache session data to avoid repeated DB queries
 type CacheEntry = {

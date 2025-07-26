@@ -22,14 +22,14 @@ import { Product, ProductFormData } from "@/types/product";
 import { useRouter } from "next/navigation";
 import { insertProductSchema } from "@/schemaValidations/product.schema";
 import { productDefaultValues } from "@/constants";
-import { createProduct, updateProduct } from "@/actions/product.action";
+import { createProduct, updateProduct } from "@/actions/product.actions";
 import { useState } from "react";
 import slugify from "slugify";
 import Image from "next/image";
 import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 import { Loader2, Upload, X } from "lucide-react";
 
-export default function MyForm({
+export default function ProductForm({
   type,
   product,
   productId,

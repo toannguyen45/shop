@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/admin/page-header";
 import BlogForm from "../components/blog-form";
-import { getBlogById } from "@/actions/blog.action";
+import { getBlogById } from "@/actions/blog.actions";
 
 const UpdateBlog = async (props: {
   params: Promise<{

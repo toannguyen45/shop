@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getAllBlogsCached } from "@/actions/blog.action";
+import { getAllBlogsCached } from "@/actions/blog.actions";
 import Link from "next/link";
 import Image from "next/image";
 

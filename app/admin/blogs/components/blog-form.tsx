@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { createBlog, updateBlog } from "@/actions/blog.action";
+import { createBlog, updateBlog } from "@/actions/blog.actions";
 import RichTextEditor from "@/components/TipTapEditor";
 import slugify from "slugify";
 import Image from "next/image";

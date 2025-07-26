@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import PageHeader from "@/components/admin/page-header";
-import MyForm from "../components/form";
+import ProductForm from "../components/product-form";
 
 const CreateProduct = () => {
   return (
@@ -18,7 +18,7 @@ const CreateProduct = () => {
           <CardTitle className="mb-2">Thông Tin</CardTitle>
         </CardHeader>
         <CardContent>
-          <MyForm type='Create'/>
+          <ProductForm type='Create'/>
         </CardContent>
       </Card>
 

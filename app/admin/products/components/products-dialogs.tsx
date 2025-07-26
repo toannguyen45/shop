@@ -3,7 +3,7 @@
 import React from "react";
 import { useProducts } from "../context/product-context";
 import ProductsDeleteDialog from "./products-delete-dialog";
-import { deleteProduct } from "@/actions/product.action";
+import { deleteProduct } from "@/actions/product.actions";
 
 const ProductsDialogs = () => {
   const { open, setOpen, currentRow, setCurrentRow } = useProducts();

@@ -2,7 +2,7 @@
 
 import React from "react";
 import BlogsDeleteDialog from "./blogs-delete-dialog";
-import { deleteBlog } from "@/actions/blog.action";
+import { deleteBlog } from "@/actions/blog.actions";
 import { useBlogs } from "../context/blog-context";
 
 const BlogsDialogs = () => {

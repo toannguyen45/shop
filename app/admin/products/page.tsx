@@ -2,7 +2,7 @@ import PageHeader from "@/components/admin/page-header";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { getAllProductsCached } from "@/actions/product.action";
+import { getAllProductsCached } from "@/actions/product.actions";
 import { ProductsTable } from "./components/products-table";
 import ProductsProvider from "./context/product-context";
 import ProductsDialogs from "./components/products-dialogs";

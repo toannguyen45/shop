@@ -16,7 +16,7 @@ import { LoginBodyType, LoginSchema } from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { login, register } from "@/actions/auth.action";
+import { login, register } from "@/actions/auth.actions";
 import * as z from "zod";
 
 export default function LoginForm({ type }: { type: "Login" | "Register" }) {

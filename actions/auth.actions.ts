@@ -1,6 +1,8 @@
 "use server";
 
-import { createSession, deleteSession } from "@/lib/session";
+import { createSessionCookie, deleteSessionCookie } from "@/lib/session";
+import { createSessionInDb, deleteSessionFromDb } from "@/lib/session-db";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import prisma from "@/db/prisma";
 import bcrypt from "bcrypt";
@@ -8,40 +10,43 @@ import { LoginSchema } from "@/schemaValidations/auth.schema";
 import { z } from "zod";
 
 export async function logout() {
-  await deleteSession();
+  const session = await getSession();
+  if (session?.sessionToken) {
+    await deleteSessionFromDb(session.sessionToken);
+  }
+  await deleteSessionCookie();
   redirect("/login");
 }
 
 export async function login(data: z.infer<typeof LoginSchema>) {
-  // 1. Lấy email và password từ form
   const { email, password } = data;
 
-  // 2. Kiểm tra dữ liệu đầu vào
   if (!email || !password) {
     return { message: "Email và mật khẩu là bắt buộc." };
   }
 
-  // 3. Tìm user trong database
   const user = await prisma.user.findUnique({
     where: { email },
   });
 
-  console.log(user, email, password);
   if (!user || !user.password) {
     return { message: "Email hoặc mật khẩu không đúng." };
   }
 
-  // 4. So sánh mật khẩu
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     return { message: "Email hoặc mật khẩu không đúng." };
   }
 
-  // 5. Tạo session JWT và lưu vào cookie
-  await createSession(user.id);
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  const sessionToken = crypto.randomUUID();
 
-  // 6. Chuyển hướng về dashboard
-  // redirect("/admin/dashboard");
+  // Create session in DB
+  await createSessionInDb(sessionToken, user.id, expiresAt);
+
+  // Create session cookie
+  await createSessionCookie(sessionToken, expiresAt);
+
   return {
     success: true,
     message: "login successfully",

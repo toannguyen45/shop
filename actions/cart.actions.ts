@@ -10,7 +10,7 @@ import {
   insertCartSchema,
 } from "@/schemaValidations/cart.schema";
 import { convertToPlainObject, formatError, round2 } from "@/lib/utils";
-import { getSessionWithUser } from "@/lib/session";
+import { getSessionWithUser } from "@/lib/session-db";
 
 // Chỉ đọc sessionCartId, không tạo mới
 async function getSessionCartId() {

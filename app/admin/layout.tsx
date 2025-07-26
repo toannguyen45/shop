@@ -4,6 +4,7 @@ import MainNav from "./main-nav";
 import Menu from "@/components/admin/menu";
 import { APP_NAME } from "@/constants";
 import { Metadata } from "next";
+import { requireAdmin } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard MiTo3D",
@@ -14,11 +15,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Check admin role thay vì chỉ check session
+  await requireAdmin();
+
   return (
     <>
       <div className="flex flex-col">

@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getFeaturedProducts } from "@/actions/product.action";
+import { getFeaturedProducts } from "@/actions/product.actions";
 import { formatCurrency } from "@/lib/utils";
 
 // Tạo async component để lấy data

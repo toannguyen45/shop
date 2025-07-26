@@ -1,4 +1,4 @@
-import { getBlogBySlug } from "@/actions/blog.action";
+import { getBlogBySlug } from "@/actions/blog.actions";
 import PageBanner from "@/components/client/page-banner";
 import ReadingProgress from "@/components/custom/reading-progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

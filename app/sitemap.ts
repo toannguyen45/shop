@@ -1,6 +1,6 @@
 import { baseUrl } from "@/lib/utils";
 import { MetadataRoute } from "next";
-import { getAllProducts } from "@/actions/product.action";
+import { getAllProducts } from "@/actions/product.actions";
 import prisma from "@/db/prisma";
 
 type Route = {

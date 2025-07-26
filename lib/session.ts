@@ -2,7 +2,6 @@ import "server-only";
 
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import prisma from "@/db/prisma";
 
 export type SessionPayload = {
   sessionToken: string;
@@ -34,34 +33,10 @@ export async function decrypt(
   }
 }
 
-export async function createSession(userId: string): Promise<void> {
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const sessionToken = crypto.randomUUID();
-
-  // Delete any existing sessions for this user (optional - for single session per user)
-  try {
-    await prisma.session.deleteMany({
-      where: { userId },
-    });
-  } catch (error) {
-    console.log("Failed to delete existing sessions:", error);
-  }
-
-  // Create new session in database
-  try {
-    await prisma.session.create({
-      data: {
-        sessionToken,
-        userId,
-        expires: expiresAt,
-      },
-    });
-  } catch (error) {
-    console.log("Failed to create session in database:", error);
-    throw new Error("Failed to create session");
-  }
-
-  // Create JWT session with sessionToken
+export async function createSessionCookie(
+  sessionToken: string,
+  expiresAt: Date
+): Promise<void> {
   const session = await encrypt({ sessionToken, expires: expiresAt });
   const cookieStore = await cookies();
   cookieStore.set("session", session, {
@@ -73,58 +48,7 @@ export async function createSession(userId: string): Promise<void> {
   });
 }
 
-export async function updateSession(): Promise<boolean> {
-  const currentSession = await getSession();
-
-  if (!currentSession) {
-    return false;
-  }
-
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-
-  // Update session in database
-  try {
-    await prisma.session.update({
-      where: { sessionToken: currentSession.sessionToken },
-      data: { expires: expiresAt },
-    });
-  } catch (error) {
-    console.log("Failed to update session in database:", error);
-    return false;
-  }
-
-  // Create new JWT session
-  const newSession = await encrypt({
-    sessionToken: currentSession.sessionToken,
-    expires: expiresAt,
-  });
-  const cookieStore = await cookies();
-  cookieStore.set("session", newSession, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    expires: expiresAt,
-    sameSite: "lax",
-    path: "/",
-  });
-
-  return true;
-}
-
-export async function deleteSession(): Promise<void> {
-  const currentSession = await getSession();
-
-  // Delete from database
-  if (currentSession) {
-    try {
-      await prisma.session.deleteMany({
-        where: { sessionToken: currentSession.sessionToken },
-      });
-    } catch (error) {
-      console.log("Failed to delete session from database:", error);
-    }
-  }
-
-  // Delete cookie
+export async function deleteSessionCookie(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete("session");
 }
@@ -132,31 +56,5 @@ export async function deleteSession(): Promise<void> {
 export async function getSession(): Promise<SessionPayload | null> {
   const session = (await cookies()).get("session")?.value;
   if (!session) return null;
-
   return await decrypt(session);
-}
-
-export async function getSessionWithUser() {
-  const session = await getSession();
-  if (!session) return null;
-
-  try {
-    const dbSession = await prisma.session.findUnique({
-      where: { sessionToken: session.sessionToken },
-      include: { user: true },
-    });
-
-    if (!dbSession || dbSession.expires < new Date()) {
-      // Session expired or not found, delete it
-      return null;
-    }
-
-    return {
-      session: session,
-      user: dbSession.user,
-    };
-  } catch (error) {
-    console.log("Failed to get session with user:", error);
-    return null;
-  }
 }

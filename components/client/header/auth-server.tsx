@@ -2,9 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "../../ui/button";
 import { User, ShoppingCart, LogOut } from "lucide-react";
-import { getSessionWithUser } from "@/lib/session";
+import { getSessionWithUser } from "@/lib/session-db";
 import { getMyCart } from "@/actions/cart.actions";
-import { logout } from "@/actions/auth.action";
+import { logout } from "@/actions/auth.actions";
 import { Badge } from "@/components/ui/badge";
 
 const AuthServer = async () => {

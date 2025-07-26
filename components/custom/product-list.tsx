@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllProductsCached } from "@/actions/product.action";
+import { getAllProductsCached } from "@/actions/product.actions";
 import ProductCard from "../client/product-card";
 
 type TParamsGetProducts = {

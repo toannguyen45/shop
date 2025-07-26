@@ -1,4 +1,4 @@
-import { getProductBySlug } from "@/actions/product.action";
+import { getProductBySlug } from "@/actions/product.actions";
 import { ImageSlider } from "@/components/client/ImageSlider";
 import PageBanner from "@/components/client/page-banner";
 import { Separator } from "@/components/ui/separator";
