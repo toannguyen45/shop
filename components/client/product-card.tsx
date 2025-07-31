@@ -2,8 +2,6 @@ import React from "react";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { Product } from "@/types/product";
 import { formatCurrency } from "@/lib/utils";
@@ -44,10 +42,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
               <h3 className="font-semibold text-lg line-clamp-1 group-hover:text-blue-600 transition-colors">
                 {product.name}
               </h3>
-              <p className="text-sm text-gray-600 line-clamp-2">
+              {/* <p className="text-sm text-gray-600 line-clamp-2">
                 {product.category}
               </p>
-              <p className="text-xs text-gray-500 mt-1">{product.brand}</p>
+              <p className="text-xs text-gray-500 mt-1">{product.brand}</p> */}
             </div>
 
             <div className="flex items-center gap-2">
@@ -55,16 +53,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 {formatCurrency(product.price)}
               </span>
             </div>
-            <Button
-              size="lg"
-              className="w-full"
-              // disabled={product.stock < 0}
-              tabIndex={-1} // Để tránh nút Add nhận focus khi bấm vào card
-              // onClick={(e) => e.preventDefault()}
-            >
-              <ShoppingCart className="" />
-              Thêm vào giỏ hàng
-            </Button>
           </div>
         </CardContent>
       </Card>

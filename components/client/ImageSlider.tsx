@@ -74,7 +74,11 @@ export function ImageSlider({ images }: iAppProps) {
           {images.slice(thumbStart, thumbStart + maxThumbs).map((img, idx) => (
             <div
               key={img}
-              className={`w-[100px] h-[100px] box-border rounded-lg overflow-hidden cursor-pointer transition border ${mainIndex === thumbStart + idx ? "border-blue-500 bg-blue-50" : "border-transparent bg-white"}`}
+              className={`w-[100px] h-[100px] box-border rounded-lg overflow-hidden cursor-pointer transition border ${
+                mainIndex === thumbStart + idx
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-transparent bg-white"
+              }`}
               onClick={() => setMainIndex(thumbStart + idx)}
             >
               <Image
@@ -105,7 +109,7 @@ export function ImageSlider({ images }: iAppProps) {
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMainImageMouseLeave}
-          onMouseEnter={e => (e.currentTarget.style.cursor = "pointer")}
+          onMouseEnter={(e) => (e.currentTarget.style.cursor = "pointer")}
           onClick={openLightbox}
         >
           <Image
@@ -117,6 +121,7 @@ export function ImageSlider({ images }: iAppProps) {
           />
         </div>
         <Lightbox
+          noScroll={{ disabled: true }}
           open={open}
           close={() => setOpen(false)}
           slides={images.map((img) => ({ src: img }))}

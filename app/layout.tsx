@@ -33,9 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body
-        className={`${montserrat.className} flex flex-col overflow-y-auto overflow-x-hidden antialiased`}
-      >
+      <body className={`${montserrat.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

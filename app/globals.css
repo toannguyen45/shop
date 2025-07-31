@@ -159,3 +159,9 @@
   color: #1d4ed8;
   border: 1px solid #1d4ed8;
 }
+
+/* Fix shadcn scroll lock issue */
+html body[data-scroll-locked] {
+  overflow: visible !important;
+  margin-right: 0 !important;
+}
